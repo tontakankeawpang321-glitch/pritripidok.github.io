@@ -1,405 +1,638 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>เรียนรู้ภาษามือ - ฉบับน่ารัก</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@300;500;700&family=Prompt:wght@300;400;600&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>พระไตรปิฎก 45 เล่ม (AI Chatbot)</title>
+<link href="https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  :root {
+    /* ===== Royal Blue & Gold Theme ===== */
+    --bg: #f4f6f9;
+    --ink: #1a2a4d;
+    --muted: #5a6b8c;
+    --royal-blue: #0a2d6e;
+    --blue-shadow: #041a4a;
+    --gold-foil: #d4af37;
+    --gold-highlight: #fdeaa8;
     
-    <style>
-        body {
-            font-family: 'Prompt', sans-serif;
-            background-color: #fff7ed; /* ส้มอ่อนๆ ครีมๆ */
-            background-image: radial-gradient(#fed7aa 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-        h1, h2, h3, .cute-font {
-            font-family: 'Mali', cursive;
-        }
-        
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px; /* For horizontal scroll */
-        }
-        ::-webkit-scrollbar-track {
-            background: #fff7ed; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #fdba74; 
-            border-radius: 10px;
-        }
+    --shadow: 0 8px 16px -8px rgba(26, 42, 77, .25);
+    --shadow-hover: 0 12px 24px -10px rgba(26, 42, 77, .35);
+    --radius: 12px;
+    --gap: 14px;
+  }
 
-        /* Animations */
-        @keyframes popIn {
-            0% { transform: scale(0.9); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .modal-content {
-            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(234, 88, 12, 0.15);
-        }
-        /* Loading Spinner */
-        .loader {
-            border: 4px solid #fff7ed;
-            border-top: 4px solid #f97316;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* Hide scrollbar for category menu on mobile but keep functionality */
-        .hide-scroll::-webkit-scrollbar {
-            display: none;
-        }
-        .hide-scroll {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  
+  body {
+    margin: 0;
+    padding: 20px;
+    font-family: "Kodchasan", system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans Thai", sans-serif;
+    color: var(--ink);
+    background-color: var(--bg);
+  }
 
-        /* --- Chatbot Styles --- */
-        #chatbot-window {
-            z-index: 100;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateY(20px) scale(0.95);
-            opacity: 0;
-            pointer-events: none;
-        }
-        #chatbot-window.active {
-            transform: translateY(0) scale(1);
-            opacity: 1;
-            pointer-events: auto;
-        }
-        .chat-bubble-ai::before {
-            content: ''; position: absolute; bottom: 0; left: -8px; width: 15px; height: 15px;
-            background: white; clip-path: polygon(100% 0, 100% 100%, 0 100%);
-        }
-        .chat-bubble-user::before {
-            content: ''; position: absolute; bottom: 0; right: -8px; width: 15px; height: 15px;
-            background: #f97316; clip-path: polygon(0 0, 0% 100%, 100% 100%);
-        }
-        .thinking-dot { animation: thinking 1.4s infinite ease-in-out; }
-        @keyframes thinking { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
-    </style>
+  header {
+    max-width: 1100px;
+    margin: 0 auto 20px;
+    text-align: center;
+  }
+  
+  h1 {
+    margin: 0 0 6px;
+    font-weight: 700;
+    font-size: clamp(22px, 4.5vw, 30px);
+    color: var(--ink);
+  }
+
+  .sub {
+    margin: 0;
+    color: var(--muted);
+    font-size: clamp(13px, 2.8vw, 15px);
+  }
+
+  /* --- Search Box --- */
+  .search-container {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    max-width: 400px;
+  }
+  #searchInput {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #ddd;
+    border-radius: var(--radius);
+    font-family: 'Kodchasan', sans-serif;
+    font-size: 14px;
+  }
+  #searchInput:focus {
+    outline: 2px solid var(--royal-blue);
+    border-color: transparent;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 1100px;
+    margin: 18px auto 0;
+    padding-bottom: 80px; /* เผื่อที่ให้ Chatbot */
+  }
+  
+  @media(min-width: 768px) {
+    .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  
+  @media(min-width: 1200px) {
+    .grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* --- New Grid Item Container --- */
+  .grid-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap);
+    background-color: #fff;
+    padding: var(--gap);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: box-shadow .2s ease;
+  }
+  .grid-item:hover {
+    box-shadow: var(--shadow-hover);
+  }
+
+  @media(min-width: 500px) {
+    .grid-item {
+      flex-direction: row;
+      align-items: flex-start;
+      text-align: left;
+    }
+  }
+
+  /* ===== New Book UI ===== */
+  a.volume {
+    position: relative;
+    display: block;
+    aspect-ratio: 3 / 4.2;
+    text-decoration: none;
+    border-radius: 8px 4px 4px 8px;
+    background: linear-gradient(135deg, var(--royal-blue), var(--blue-shadow));
+    box-shadow: var(--shadow), inset -2px 0 2px rgba(0,0,0,.2);
+    color: var(--gold-foil);
+    overflow: hidden;
+    transition: transform .2s ease, box-shadow .2s ease;
+    flex-shrink: 0;
+    width: 120px;
+  }
+  @media(min-width: 500px) {
+    a.volume { width: 140px; }
+  }
+
+
+  a.volume:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: var(--shadow-hover), inset -2px 0 2px rgba(0,0,0,.2);
+  }
+  
+  a.volume:active {
+    transform: translateY(1px);
+  }
+  
+  a.volume:focus-visible {
+    outline: 3px solid var(--royal-blue);
+    outline-offset: 3px;
+  }
+
+  .spine {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 20px;
+    background-color: var(--blue-shadow);
+    box-shadow: inset -1px 0 0 rgba(255,255,255,.05), inset 2px 0 4px rgba(0,0,0,.4);
+  }
+  
+  /* Gold lines on spine */
+  .spine::before, .spine::after {
+    content: '';
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    height: 1px;
+    background-color: var(--gold-foil);
+    opacity: .8;
+  }
+  .spine::before { top: 20px; }
+  .spine::after { bottom: 20px; }
+
+  .cover {
+    position: absolute;
+    top: 8px; right: 8px; bottom: 8px; left: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 8px;
+    border: 1px solid var(--gold-foil);
+    box-shadow: inset 0 0 0 3px transparent, inset 0 0 0 4px var(--gold-foil);
+    border-radius: 3px;
+  }
+
+  .cover-title {
+    font-weight: 600;
+    font-size: clamp(8px, 2.2vw, 10px);
+    margin-bottom: 2px;
+    color: var(--gold-highlight);
+    letter-spacing: .5px;
+    opacity: .9;
+  }
+  
+  .cover-vol {
+    font-weight: 700;
+    font-size: clamp(14px, 4vw, 20px);
+    color: #fff;
+    text-shadow: 0 0 6px var(--gold-foil);
+    line-height: 1.1;
+  }
+  
+  .cover-cat {
+    font-size: clamp(7px, 2vw, 9px);
+    margin-top: 4px;
+    color: var(--gold-highlight);
+    opacity: .8;
+  }
+  
+  /* --- Description Box --- */
+  .description {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .description h3 {
+      margin: 0 0 4px;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--royal-blue);
+  }
+  .description p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+  }
+
+  footer {
+    max-width: 1100px;
+    margin: 24px auto 0;
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    opacity: .8;
+  }
+
+  /* ===== CSS ของ Chatbot UI (Modern style) ===== */
+  .chat-bubble::before { content: ''; position: absolute; width: 0; height: 0; border-style: solid; }
+  .chat-bubble-user::before {
+    border-width: 0 12px 12px 12px; border-color: transparent transparent #0a2d6e transparent; /* Royal Blue */
+    top: -10px; right: 12px;
+  }
+  .chat-bubble-model::before {
+    border-width: 0 12px 12px 12px; border-color: transparent transparent #e5e7eb transparent;
+    top: -10px; left: 12px;
+  }
+  .gemini-thinking-bar {
+    position: relative; width: 100%; height: 4px; background-color: #e0e0e0;
+    border-radius: 2px; overflow: hidden;
+  }
+  .gemini-thinking-bar::before {
+    content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 100%;
+    background: linear-gradient(90deg, #0a2d6e, #d4af37, #0a2d6e);
+    background-size: 200% 100%; animation: thinking-gradient 2s linear infinite;
+  }
+  @keyframes thinking-gradient { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  
+  #fab-chat-toggle {
+    position: fixed; bottom: 25px; right: 25px;
+    width: 60px; height: 60px;
+    background-color: var(--royal-blue); color: white;
+    border: none; border-radius: 50%;
+    font-size: 28px; line-height: 60px; text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    cursor: pointer; z-index: 998;
+    transition: transform 0.2s, opacity 0.3s;
+    font-family: 'Kodchasan', sans-serif;
+  }
+  #fab-chat-toggle:hover { transform: scale(1.05); background-color: var(--blue-shadow); }
+  
+  #chatbot-modal {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: 1000; transition: opacity 0.3s, transform 0.3s;
+    opacity: 1; transform: translateY(0); pointer-events: auto;
+  }
+  #chatbot-modal.chatbot-hidden {
+    opacity: 0; transform: translateY(100%); pointer-events: none;
+  }
+
+</style>
 </head>
-<body class="text-gray-700 min-h-screen flex flex-col">
-
-    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-40 shadow-sm border-b border-orange-100 h-[72px]">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-3 h-full">
-            <div class="flex items-center gap-2 md:gap-3 w-full md:w-auto justify-center md:justify-start">
-                <div class="bg-orange-100 p-2 rounded-full text-orange-500">
-                    <i data-lucide="hand" class="w-6 h-6 md:w-8 md:h-8"></i>
-                </div>
-                <h1 class="text-xl md:text-3xl font-bold text-orange-600 cute-font whitespace-nowrap">ภาษามือหรรษา</h1>
-            </div>
-            
-            <div class="relative w-full md:w-96 hidden md:block">
-                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <i data-lucide="search" class="w-5 h-5 text-orange-300"></i>
-                </div>
-                <input type="text" id="searchInputDesktop" 
-                    class="block w-full pl-10 pr-3 py-2 border-2 border-orange-100 rounded-full leading-5 bg-white placeholder-orange-200 focus:outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 transition-all duration-300 cute-font" 
-                    placeholder="ค้นหาคำศัพท์... (เช่น ก ไก่)">
-            </div>
-        </div>
-    </header>
-
-    <div class="md:hidden px-4 py-3 bg-white/50 backdrop-blur-sm border-b border-orange-50">
-        <div class="relative w-full">
-            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <i data-lucide="search" class="w-5 h-5 text-orange-300"></i>
-            </div>
-            <input type="text" id="searchInputMobile" 
-                class="block w-full pl-10 pr-3 py-2 border-2 border-orange-100 rounded-full leading-5 bg-white placeholder-orange-200 focus:outline-none focus:border-orange-400 focus:ring-2 focus:ring-orange-200 transition-all duration-300 cute-font text-sm" 
-                placeholder="ค้นหาคำศัพท์...">
-        </div>
+<body>
+  <header>
+    <h1>พระไตรปิฎก 45 เล่ม</h1>
+    <p class="sub">• แตะที่ปกหนังสือเพื่อเปิดอ่านในแท็บใหม่</p>
+    <div class="search-container">
+      <input type="text" id="searchInput" placeholder="ค้นหา เช่น พิมพ์ '1' หรือ '25'">
     </div>
+  </header>
 
-    <main class="flex-grow container mx-auto px-4 py-4 md:py-6 max-w-6xl relative">
-        
-        <div class="flex flex-col md:flex-row gap-6">
-            
-            <aside class="w-full md:w-64 flex-shrink-0 sticky top-0 md:top-24 z-30 bg-transparent pointer-events-none md:pointer-events-auto">
-                <div class="pointer-events-auto">
-                    <h3 class="text-lg font-bold text-orange-800 cute-font mb-3 hidden md:block px-2">
-                        <i data-lucide="list-filter" class="inline w-4 h-4 mr-1"></i> หมวดหมู่
-                    </h3>
-                    
-                    <div id="categoryMenu" class="flex overflow-x-auto md:flex-col gap-2 pb-2 md:pb-0 hide-scroll snap-x py-2 md:py-0 -mx-4 px-4 md:mx-0 md:px-0 bg-white/90 backdrop-blur-md md:bg-transparent shadow-sm md:shadow-none border-b md:border-none border-orange-100 md:rounded-none">
-                        <div class="animate-pulse bg-white h-10 w-24 rounded-full md:w-full md:rounded-xl"></div>
-                        <div class="animate-pulse bg-white h-10 w-24 rounded-full md:w-full md:rounded-xl"></div>
-                        <div class="animate-pulse bg-white h-10 w-24 rounded-full md:w-full md:rounded-xl"></div>
-                    </div>
-                </div>
-            </aside>
+  <div class="grid" id="grid" aria-label="รายการพระไตรปิฎก 45 เล่ม"></div>
 
-            <div class="flex-grow min-w-0 pt-2 md:pt-0">
-                <div id="loadingState" class="text-center py-12 hidden">
-                    <div class="loader mb-4"></div>
-                    <p class="cute-font text-orange-400">กำลังโหลดข้อมูลคำศัพท์จ้า...</p>
-                </div>
+  <footer>
+    <p class="footer-links">
+      © 2025 Crow Studio |
+      <a href="https://sites.google.com/view/privacy-policy-pdpa-crow-studi/%E0%B8%AB%E0%B8%99%E0%B8%B2%E0%B9%81%E0%B8%A3%E0%B8%81">นโยบายความเป็นส่วนตัว</a> |
+      <a href="ลิงก์ข้อตกลง">ข้อตกลงการใช้งาน</a>
+    </p>
+  </footer>
 
-                <div id="cardGrid" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6"></div>
+  <button id="fab-chat-toggle" title="ถาม AI พระไตรปิฎก">Ai</button>
 
-                <div id="noResults" class="hidden text-center py-12">
-                    <div class="bg-white p-6 rounded-3xl inline-block shadow-sm">
-                        <i data-lucide="frown" class="w-12 h-12 mx-auto text-orange-300 mb-2"></i>
-                        <p class="cute-font text-lg text-gray-500">ไม่พบคำที่ค้นหาจ้า</p>
-                    </div>
-                </div>
-
-                <div id="errorState" class="hidden text-center py-12">
-                    <div class="bg-red-50 p-6 rounded-3xl inline-block shadow-sm border border-red-100">
-                        <i data-lucide="alert-circle" class="w-12 h-12 mx-auto text-red-400 mb-2"></i>
-                        <p class="cute-font text-lg text-red-500">โหลดข้อมูลไม่สำเร็จ</p>
-                    </div>
-                </div>
-            </div>
+  <div id="chatbot-modal" class="chatbot-hidden">
+    <div class="flex flex-col h-screen bg-gray-100">
+      <header class="bg-[#0a2d6e] text-white p-4 flex justify-between items-center shadow-md">
+        <div class="flex items-center gap-2">
+            <span class="text-2xl text-[#d4af37]">☸️</span>
+            <h1 class="text-lg font-bold font-sans text-white m-0">AI พระไตรปิฎก</h1>
         </div>
-    </main>
-
-    <div id="chatbot-container" class="fixed bottom-6 right-6 flex flex-col items-end z-[100]">
-        <div id="chatbot-window" class="w-[90vw] md:w-[380px] h-[500px] bg-white rounded-3xl shadow-2xl border border-orange-100 flex flex-col overflow-hidden mb-4">
-            <div class="bg-orange-500 p-4 flex justify-between items-center text-white">
-                <div class="flex items-center gap-2">
-                    <i data-lucide="bot" class="w-6 h-6"></i>
-                    <span class="cute-font font-bold">พี่ AI สอนภาษามือ</span>
-                </div>
-                <button onclick="toggleChat()" class="hover:bg-orange-600 rounded-full p-1"><i data-lucide="x" class="w-5 h-5"></i></button>
-            </div>
-            
-            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-orange-50/30">
-                <div class="flex flex-col items-start">
-                    <div class="bg-white p-3 rounded-2xl rounded-bl-none shadow-sm text-sm chat-bubble-ai relative max-w-[85%]">
-                        สวัสดีจ้า! มีคำไหนในภาษามือที่อยากรู้ หรืออยากให้ช่วยอธิบายท่าทางไหน ถามพี่ AI ได้เลยนะ 🧡
-                    </div>
-                </div>
-            </div>
-
-            <div id="chat-thinking" class="hidden px-4 py-2">
-                <div class="flex gap-1">
-                    <div class="w-2 h-2 bg-orange-300 rounded-full thinking-dot"></div>
-                    <div class="w-2 h-2 bg-orange-300 rounded-full thinking-dot" style="animation-delay: 0.2s"></div>
-                    <div class="w-2 h-2 bg-orange-300 rounded-full thinking-dot" style="animation-delay: 0.4s"></div>
-                </div>
-            </div>
-
-            <div class="p-4 border-t border-orange-100 flex gap-2 bg-white">
-                <input type="text" id="chat-input" class="flex-1 bg-orange-50 border-none rounded-2xl px-4 py-2 text-sm focus:ring-2 focus:ring-orange-300 outline-none" placeholder="ถามพี่ AI ได้เลย...">
-                <button id="send-chat" class="bg-orange-500 text-white p-2 rounded-xl hover:bg-orange-600 transition-colors">
-                    <i data-lucide="send" class="w-5 h-5"></i>
-                </button>
-            </div>
+        <div>
+          <button id="new-chat-btn" class="bg-[#d4af37] hover:bg-yellow-600 text-[#0a2d6e] font-bold py-1 px-3 rounded mr-2 text-sm">
+            เริ่มใหม่
+          </button>
+          <button id="chatbot-close-btn" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded text-sm">
+            ปิด
+          </button>
         </div>
+      </header>
 
-        <button onclick="toggleChat()" class="bg-orange-500 hover:bg-orange-600 text-white p-4 rounded-full shadow-lg transition-transform hover:scale-110 active:scale-95 flex items-center justify-center">
-            <i data-lucide="message-circle" class="w-8 h-8" id="chat-icon"></i>
-        </button>
+      <main id="chat-history" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
+        <div class="flex items-start space-x-2">
+          <span class="text-2xl">🤖</span>
+          <div class="chat-bubble chat-bubble-model bg-white text-gray-800 p-3 rounded-lg max-w-lg relative border border-gray-200 shadow-sm">
+            <p>เจริญพร... อาตมาคือ AI ผู้ช่วยค้นหาและอธิบายพระไตรปิฎก โยมสงสัยในธรรมข้อใด หรือต้องการค้นหาเล่มไหน สอบถามได้เลย</p>
+          </div>
+        </div>
+      </main>
+
+      <div id="thinking-indicator" class="p-4 hidden bg-gray-50">
+        <div class="flex items-center space-x-2">
+          <span class="text-2xl">🤖</span>
+          <div class="chat-bubble chat-bubble-model bg-white text-gray-800 p-3 rounded-lg max-w-lg relative border border-gray-200">
+            <div class="gemini-thinking-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <footer class="bg-white p-3 shadow-inner border-t border-gray-200 m-0 w-full max-w-full">
+        <div class="flex space-x-2">
+          <input id="user-input" type="text" placeholder="พิมพ์คำถามธรรมะ..." class="flex-1 p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0a2d6e] font-sans text-base">
+          <button id="send-btn" class="bg-[#0a2d6e] hover:bg-[#041a4a] text-white font-bold py-2 px-4 rounded-xl shadow-sm">
+            ส่ง
+          </button>
+        </div>
+      </footer>
     </div>
+  </div>
 
-    <footer class="text-center py-6 text-orange-300 text-sm cute-font">
-        <p>สร้างสรรค์ด้วยความรัก 🧡 เพื่อการเรียนรู้</p>
-    </footer>
+<script>
+  /* =========================================
+     1. สคริปต์แสดงผลหนังสือ (เหมือนเดิม)
+     ========================================= */
+  const links = [
+    "https://drive.google.com/file/d/1DS92iGBd8GI4ZSKhkKVMuAlwBNdgnMfT/view?usp=sharing",
+    "https://drive.google.com/file/d/1638kDq0hXXwjLPMozk1cAGt4qBSnk_xE/view?usp=sharing",
+    "https://drive.google.com/file/d/17sj3c-UF2IrCSbYqIf24Lj-vs2zOaXi0/view?usp=sharing",
+    "https://drive.google.com/file/d/12JPD1-eLAdPKeCCMaanF6SN9IZ7fDGg5/view?usp=sharing",
+    "https://drive.google.com/file/d/1Q6_ZqpAKYUG2ffpNss5tDjCLvPUTIJdN/view?usp=sharing",
+    "https://drive.google.com/file/d/1l782F_TESMPGXATyP86G2wvWH3fYJSXi/view?usp=sharing",
+    "https://drive.google.com/file/d/1Ji96yfJDvpHMVPy1sQu07RaXslG_Jagw/view?usp=sharing",
+    "https://drive.google.com/file/d/1sagLOlIrTHJSSRZHoHkB3CGOmqRsHesk/view?usp=drive_link",
+    "https://drive.google.com/file/d/1UpbGv2dcZM9qFPTo_dlSAiB60fDLj5dP/view?usp=drive_link",
+    "https://drive.google.com/file/d/1cR7FvuofyAw3PBvuI4wPTCZ6dEBEFdjQ/view?usp=drive_link",
+    "https://drive.google.com/file/d/1sFjBVFT4VnFsM-fzxmBUqx9iT96ramVC/view?usp=drive_link",
+    "https://drive.google.com/file/d/1KzPXthAWXOMBlTIqmP3N8hIeleScYXTn/view?usp=drive_link",
+    "https://drive.google.com/file/d/1UDt_Ss4ZnyS6I9A8GbxpX8rpDIl9QiYK/view?usp=drive_link",
+    "https://drive.google.com/file/d/14GfX0djPOAaxfl4WNThnQ6Vv9ZzQBQxp/view?usp=drive_link",
+    "https://drive.google.com/file/d/1zNj800FQArrtL-P27KFfL0jTPGVeqQLP/view?usp=drive_link",
+    "https://drive.google.com/file/d/1MmzizY6xg84V_Se1F7SsPfCzoIeECzLq/view?usp=drive_link",
+    "https://drive.google.com/file/d/1KcRsUSnS_rUSz4MSj2921MARRpUkNcsm/view?usp=drive_link",
+    "https://drive.google.com/file/d/1ZHaOi6yZtPBKBUDD4u5LKfH-euDOwvfd/view?usp=drive_link",
+    "https://drive.google.com/file/d/1UDQ2m7XwgltASrO8qM0JVzbO4E4XYyw1/view?usp=drive_link",
+    "https://drive.google.com/file/d/1tOLKO0HNmAa4MzDZPv2r4Q_BmEw_LsPw/view?usp=drive_link",
+    "https://drive.google.com/file/d/1CiwzHnuGX6asG5z3IRvqNiHUPqpcvFnH/view?usp=drive_link",
+    "https://drive.google.com/file/d/1dcixOg41U3waIoy7Epuvaw8t4OOY5S4A/view?usp=drive_link",
+    "https://drive.google.com/file/d/1Qyx4mGQK833evtnqK649ziMEMH7U39PG/view?usp=drive_link",
+    "https://drive.google.com/file/d/1chtA9Hp7UgUVsfHfdihyhjqZzSNLu2s_/view?usp=drive_link",
+    "https://drive.google.com/file/d/1kb0fw5yXBP7uZuiy-gEj18Ct0kEeye-d/view?usp=drive_link",
+    "https://drive.google.com/file/d/17glsqiMEhz4QZFKMhaYIXHw6B_yCS3Rn/view?usp=drive_link",
+    "https://drive.google.com/file/d/1I6_7NNxWDeFho4MHY3gvyPURaNTT9JQI/view?usp=drive_link",
+    "https://drive.google.com/file/d/1JprJquzq7bmBFC5lCIwebc9rH7aVR3Or/view?usp=drive_link",
+    "https://drive.google.com/file/d/1IX_X20BpfI_6RIJ_txCs0ZTl8370oSGB/view?usp=drive_link",
+    "https://drive.google.com/file/d/1CY370T9OSgZlqJn2znmpZiivABLtBXR7/view?usp=drive_link",
+    "https://drive.google.com/file/d/15qJr5WEq2_Hb6AZh7f47GofHazNwGGqj/view?usp=drive_link",
+    "https://drive.google.com/file/d/14TTYXHSRsBeFmgtT63SDQcRTMmnonAWT/view?usp=drive_link",
+    "https://drive.google.com/file/d/1PMAQZPLsYwtAgrLHV7HXoGgc3zcBU5Aw/view?usp=drive_link",
+    "https://drive.gdrive.google.com/file/d/1JC6jfY3sk5In2EUWeB5m6v4a2opuZiQD/view?usp=drive_link",
+    "https://drive.google.com/file/d/1Yiz_yOtFNvJYbhNclIBGCC4NvXdlZLmz/view?usp=drive_link",
+    "https://drive.google.com/file/d/1E2APLRr1Tm1pag0EZdbZIRAmOY7nbIgB/view?usp=drive_link",
+    "https://drive.google.com/file/d/169SjaiPXgBdBWsg1cEUZ-lR4O-yMpaVh/view?usp=drive_link",
+    "https://drive.google.com/file/d/1PXnxAhrbngagFFZVkRalGvSeKfNHYd1i/view?usp=drive_link",
+    "https://drive.google.com/file/d/1MOfGC_c0XQTd3qQdPKXOaEpIfuzxq-U5/view?usp=drive_link",
+    "https://drive.google.com/file/d/1GyVl8iq26-PocVA7uNQGTp0Z_XZ8s9dh/view?usp=drive_link",
+    "https://drive.google.com/file/d/1E0i4MRhwmFnKzdH0qlyQsjq3yqMzyvcY/view?usp=drive_link",
+    "https://drive.google.com/file/d/1Z9E731FVCY_SW5-PS0KyC4hWearJDeC2/view?usp=drive_link",
+    "https://drive.google.com/file/d/1X08279nx9-L39uoQ6iaBwUoQRqYZIpl5/view?usp=drive_link",
+    "https://drive.google.com/file/d/1_cEe2Ydlaw00WaewmOsV5ou_0k3RCPXl/view?usp=drive_link",
+    "https://drive.google.com/file/d/1ZGy1eDJGgKICw_08rKAwgjOm1YVN7hzA/view?usp=drive_link",
+  ];
+  
+  const descriptions = [
+    "มหาวิภังค์ ภาค 1 ว่าด้วยปาราชิก สังฆาทิเสส และอนิยตสิกขาบท",
+    "มหาวิภังค์ ภาค 2 ว่าด้วยนิสสัคคิยปาจิตตีย์ ปาจิตตีย์ ปาฏิเทสนียะ และเสขิยวัตร",
+    "ภิกขุนีวิภังค์ ว่าด้วยสิกขาบทของภิกษุณี",
+    "มหาวรรค ภาค 1 ว่าด้วยการอุปสมบท อุโบสถ จำพรรษา และปวารณา",
+    "มหาวรรค ภาค 2 ว่าด้วยเรื่องเครื่องหนัง เภสัช กฐิน และจีวร",
+    "จูฬวรรค ภาค 1 ว่าด้วยเรื่องกรรม สังฆเภท และวัตรต่างๆ",
+    "จูฬวรรค ภาค 2 ว่าด้วยเสนาสนะ สังฆกรรม และการแตกสงฆ์",
+    "ปริวารวรรค ว่าด้วยข้อปลีกย่อย คำถามคำตอบสรุปพระวินัย",
+    "สีลขันธวรรค ว่าด้วยศีล จริยวัตร และข้อปฏิบัติของพระภิกษุ",
+    "มหาวรรค ว่าด้วยพระสูตรขนาดยาว 10 สูตร",
+    "ปาฏิกวรรค ว่าด้วยพระสูตรเบ็ดเตล็ดต่างๆ",
+    "มัชฌิมนิกาย มูลปัณณาสก์",
+    "มัชฌิมนิกาย มัชฌิมปัณณาสก์",
+    "มัชฌิมนิกาย อุปริปัณณาสก์",
+    "สังยุตตนิกาย สคาถวรรค",
+    "สังยุตตนิกาย นิทานวรรค",
+    "สังยุตตนิกาย ขันธวารวรรค",
+    "สังยุตตนิกาย สฬายตนวรรค",
+    "สังยุตตนิกาย มหาวารวรรค",
+    "อังคุตตรนิกาย เอก-ทุก-ติกนิบาต",
+    "อังคุตตรนิกาย จตุกกนิบาต",
+    "อังคุตตรนิกาย ปัญจก-ฉักกนิบาต",
+    "อังคุตตรนิกาย สัตตก-อัฏฐก-นวกนิบาต",
+    "อังคุตตรนิกาย ทสก-เอกาทสกนิบาต",
+    "ขุททกนิกาย ภาค 1 รวมคาถาธรรมบท เถรคาถา เถรีคาถา",
+    "ขุททกนิกาย ภาค 2 รวมชาดก",
+    "ขุททกนิกาย ภาค 3 รวมชาดก",
+    "ขุททกนิกาย ภาค 4 รวมชาดก",
+    "ขุททกนิกาย ภาค 5 รวมชาดก",
+    "ขุททกนิกาย ภาค 6 รวมชาดก",
+    "ขุททกนิกาย ภาค 7 รวมชาดก",
+    "ขุททกนิกาย ภาค 8 รวมชาดก",
+    "ขุททกนิกาย ภาค 9 รวมชาดก",
+    "ธัมมสังคณีปกรณ์",
+    "วิภังคปกรณ์",
+    "ธาตุกถา-ปุคคลบัญญัติปกรณ์",
+    "กถาวัตถุปกรณ์",
+    "ยมกปกรณ์ ภาค 1",
+    "ยมกปกรณ์ ภาค 2",
+    "ยมกปกรณ์ ภาค 3",
+    "ปัฏฐานปกรณ์ ภาค 1",
+    "ปัฏฐานปกรณ์ ภาค 2",
+    "ปัฏฐานปกรณ์ ภาค 3",
+    "ปัฏฐานปกรณ์ ภาค 4",
+    "ปัฏฐานปกรณ์ ภาค 5",
+  ];
 
-    <div id="detailModal" class="relative z-50 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div class="fixed inset-0 bg-orange-900/30 backdrop-blur-sm transition-opacity"></div>
-        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0" onclick="closeModal()">
-                <div class="relative transform overflow-hidden rounded-3xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg modal-content border-4 border-orange-100" onclick="event.stopPropagation()">
-                    <button onclick="closeModal()" class="absolute top-4 right-4 bg-orange-100 hover:bg-orange-200 text-orange-500 rounded-full p-1 transition-colors z-20 shadow-md">
-                        <i data-lucide="x" class="w-6 h-6"></i>
-                    </button>
-                    <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                        <div class="flex flex-col items-center">
-                            <div class="w-full h-64 bg-orange-50 rounded-2xl overflow-hidden mb-4 relative flex items-center justify-center border border-orange-100">
-                                <img id="modalImage" src="" alt="Sign Language" class="max-w-full max-h-full object-contain">
-                                <div class="absolute bottom-2 right-2 bg-white/90 px-3 py-1 rounded-full text-xs font-bold text-orange-500 shadow-sm border border-orange-100" id="modalCategory"></div>
-                            </div>
-                            <h3 id="modalTitle" class="text-3xl font-bold text-orange-600 cute-font mb-1 text-center"></h3>
-                            <p id="modalWordEn" class="text-sm text-gray-400 font-medium mb-4 text-center"></p>
-                            <div class="w-full bg-orange-50/50 rounded-xl p-4 mb-3 border border-orange-100">
-                                <h4 class="text-sm font-bold text-orange-400 mb-1 cute-font flex items-center gap-1"><i data-lucide="book-open" class="w-4 h-4"></i> วิธีทำ</h4>
-                                <p id="modalDesc" class="text-gray-600 text-sm leading-relaxed"></p>
-                                <p id="modalDescEn" class="text-gray-400 text-xs mt-2 italic border-t border-orange-100 pt-2"></p>
-                            </div>
-                            <div class="w-full bg-yellow-50 rounded-xl p-3 mb-4 border border-yellow-100 flex gap-3 items-start">
-                                <div class="bg-yellow-100 p-1.5 rounded-full text-yellow-500 mt-0.5 shrink-0"><i data-lucide="lightbulb" class="w-4 h-4"></i></div>
-                                <div>
-                                    <span class="text-xs font-bold text-yellow-600 block mb-0.5">เคล็ดลับการจำ</span>
-                                    <p id="modalTip" class="text-yellow-800 text-sm"></p>
-                                </div>
-                            </div>
-                            <div id="videoContainer" class="w-full rounded-xl overflow-hidden shadow-sm bg-black relative aspect-video hidden">
-                                <iframe id="modalYoutube" class="w-full h-full absolute inset-0 z-10" src="" frameborder="0" allowfullscreen></iframe>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  const volumes = Array.from({length: 45}, (_, i) => {
+    const n = i + 1;
+    let cat_full;
+    if (n <= 8) { cat_full = 'พระวินัยปิฎก'; } 
+    else if (n <= 33) { cat_full = 'พระสุตตันตปิฎก'; } 
+    else { cat_full = 'พระอภิธรรมปิฎก'; }
+    return { n, cat_full, link: links[i], description: descriptions[i] };
+  });
+
+  const grid = document.getElementById('grid');
+  const searchInput = document.getElementById('searchInput');
+
+  function renderBooks(bookData) {
+    grid.innerHTML = ''; 
+    for (const v of bookData) {
+      const item = document.createElement('div');
+      item.className = 'grid-item';
+      const a = document.createElement('a');
+      a.className = 'volume';
+      a.href = v.link || '#';
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.setAttribute('aria-label', `เปิดอ่าน พระไตรปิฎก เล่มที่ ${v.n}`);
+      a.innerHTML = `
+        <div class="spine" aria-hidden="true"></div>
+        <div class="cover" aria-hidden="true">
+            <div class="cover-title">พระไตรปิฎก</div>
+            <div class="cover-vol">เล่ม ${v.n}</div>
+            <div class="cover-cat">${v.cat_full}</div>
         </div>
-    </div>
+      `;
+      const desc = document.createElement('div');
+      desc.className = 'description';
+      desc.innerHTML = `
+        <h3>${v.cat_full}</h3>
+        <p>${v.description || 'ไม่มีข้อมูลย่อสำหรับเล่มนี้'}</p>
+      `;
+      item.appendChild(a);
+      item.appendChild(desc);
+      grid.appendChild(item);
+    }
+  }
 
-    <script>
-        // --- 1. Data Setup & Navigation ---
-        let vocabData = []; 
-        let categories = ['ทั้งหมด'];
-        let activeCategory = 'ทั้งหมด';
-        
-        const cardGrid = document.getElementById('cardGrid');
-        const categoryMenu = document.getElementById('categoryMenu');
-        const searchInputDesktop = document.getElementById('searchInputDesktop');
-        const searchInputMobile = document.getElementById('searchInputMobile');
-        const loadingState = document.getElementById('loadingState');
-        const modal = document.getElementById('detailModal');
+  function handleSearch() {
+    const query = searchInput.value.trim().toLowerCase();
+    if (query === '') { renderBooks(volumes); } 
+    else {
+      const filteredVolumes = volumes.filter(v => v.n.toString().includes(query));
+      renderBooks(filteredVolumes);
+    }
+  }
 
-        async function loadData() {
-            loadingState.classList.remove('hidden');
-            try {
-                const response = await fetch('signs500.json');
-                const rawData = await response.json();
-                vocabData = rawData.map(item => ({ ...item, category: item.category || 'ทั่วไป' }));
-                const uniqueCats = [...new Set(vocabData.map(item => item.category))].sort();
-                categories = ['ทั้งหมด', ...uniqueCats];
-                loadingState.classList.add('hidden');
-                renderCategories();
-                filterAndRender();
-            } catch (error) {
-                document.getElementById('errorState').classList.remove('hidden');
-                loadingState.classList.add('hidden');
-            }
-        }
+  searchInput.addEventListener('input', handleSearch);
+  renderBooks(volumes);
 
-        function renderCategories() {
-            categoryMenu.innerHTML = categories.map(cat => `
-                <button onclick="setCategory('${cat}')" class="${activeCategory === cat ? 'bg-orange-500 text-white shadow-md' : 'bg-white text-gray-600 border border-orange-100'} shrink-0 snap-start px-4 py-2 rounded-full md:rounded-xl transition-all cute-font text-sm md:w-full md:text-left whitespace-nowrap">
-                    ${cat}
-                </button>
-            `).join('');
-            lucide.createIcons();
-        }
+  /* =========================================
+     2. ส่วน Chatbot AI (Backend)
+     ========================================= */
+  // URL Backend ของคุณ
+  const BACKEND_URL = 'https://kodmai2025-github-io.vercel.app/api/chat';
 
-        window.setCategory = (cat) => { activeCategory = cat; renderCategories(); filterAndRender(); };
+  // System Prompt: ปรับบุคลิกให้เป็นผู้เชี่ยวชาญพระไตรปิฎก
+  const SYSTEM_PROMPT = {
+      role: "user",
+      parts: [{ text: "System Instruction: คุณคือ AI ผู้เชี่ยวชาญด้าน 'พระไตรปิฎก 45 เล่ม' และ 'พุทธศาสนา' มีหน้าที่ช่วยค้นหา ตอบคำถามเกี่ยวกับหลักธรรม ชาดก พระวินัย พระสูตร และพระอภิธรรม ให้ตอบด้วยภาษาสุภาพ นุ่มนวล (ใช้สรรพนามว่า 'อาตมา' หรือ 'ผู้ช่วย' ตามเหมาะสม) ห้ามตอบเรื่องกฎหมาย ถ้าผู้ใช้ถามเรื่องอื่นให้วกกลับมาเรื่องธรรมะ" }]
+  };
+  const SYSTEM_ACK = {
+      role: "model",
+      parts: [{ text: "รับทราบ เจริญพร อาตมาพร้อมให้ความรู้ด้านพระไตรปิฎกแล้ว" }]
+  };
 
-        function filterAndRender() {
-            const searchTerm = (searchInputDesktop.value || searchInputMobile.value || '').toLowerCase();
-            const filtered = vocabData.filter(item => {
-                const matchCat = activeCategory === 'ทั้งหมด' || item.category === activeCategory;
-                const matchSearch = item.word?.toLowerCase().includes(searchTerm) || item.word_en?.toLowerCase().includes(searchTerm);
-                return matchCat && matchSearch;
-            });
-            renderCards(filtered);
-        }
+  let chatHistory = [SYSTEM_PROMPT, SYSTEM_ACK];
 
-        function renderCards(items) {
-            cardGrid.innerHTML = items.map(item => `
-                <div onclick='openModal(${JSON.stringify(item).replace(/'/g, "&apos;")})' class="bg-white rounded-2xl shadow-sm border border-orange-100 overflow-hidden cursor-pointer card-hover transition-all flex flex-col h-full">
-                    <div class="h-32 md:h-40 overflow-hidden bg-orange-50"><img src="${item.imageUrl}" class="w-full h-full object-cover"></div>
-                    <div class="p-3"><h3 class="font-bold cute-font truncate">${item.word}</h3><p class="text-xs text-orange-400 truncate">${item.word_en || ''}</p></div>
-                </div>
-            `).join('');
-            document.getElementById('noResults').classList.toggle('hidden', items.length > 0);
-            lucide.createIcons();
-        }
+  const chatHistoryEl = document.getElementById('chat-history');
+  const userInput = document.getElementById('user-input');
+  const sendBtn = document.getElementById('send-btn');
+  const newChatBtn = document.getElementById('new-chat-btn');
+  const thinkingIndicator = document.getElementById('thinking-indicator');
 
-        function openModal(item) {
-            document.getElementById('modalTitle').innerText = item.word;
-            document.getElementById('modalWordEn').innerText = item.word_en || '';
-            document.getElementById('modalCategory').innerText = item.category;
-            document.getElementById('modalDesc').innerText = item.description;
-            document.getElementById('modalImage').src = item.imageUrl;
-            document.getElementById('modalTip').innerText = item.tip || '-';
-            
-            const ytFrame = document.getElementById('modalYoutube');
-            if (item.youtubeUrl) {
-                const id = item.youtubeUrl.match(/(?:v=|\/embed\/|youtu\.be\/)([^&?#]+)/)?.[1];
-                ytFrame.src = id ? `https://www.youtube.com/embed/${id}` : "";
-                document.getElementById('videoContainer').classList.toggle('hidden', !id);
-            } else {
-                document.getElementById('videoContainer').classList.add('hidden');
-            }
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
+  function addChatBubble(message, isUser = true) {
+      const bubbleType = isUser ? 'user' : 'model';
+      const icon = isUser ? '👤' : '🤖';
+      // ปรับสี Bubble ให้เข้ากับธีม Royal Blue
+      const bgClass = isUser ? 'bg-[#0a2d6e] text-white' : 'bg-white text-gray-800 border border-gray-200';
+      
+      const wrap = document.createElement('div');
+      wrap.className = `flex items-start space-x-2 ${isUser ? 'flex-row-reverse space-x-reverse' : ''}`;
+      
+      const bubble = document.createElement('div');
+      bubble.className = `chat-bubble chat-bubble-${bubbleType} ${bgClass} p-3 rounded-lg max-w-lg relative shadow-sm`;
+      bubble.innerHTML = `<p>${message.replace(/\n/g, '<br>')}</p>`;
+      
+      wrap.innerHTML = `<span class="text-2xl">${icon}</span>`;
+      wrap.appendChild(bubble);
+      
+      chatHistoryEl.appendChild(wrap);
+      chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight;
+  }
 
-        function closeModal() { modal.classList.add('hidden'); document.getElementById('modalYoutube').src = ""; document.body.style.overflow = 'auto'; }
+  function addChatError(message) {
+      const w = document.createElement('div');
+      w.className = 'flex justify-center my-2';
+      w.innerHTML = `<span class="bg-red-100 text-red-700 text-xs font-semibold px-3 py-1 rounded-full">${message}</span>`;
+      chatHistoryEl.appendChild(w);
+      chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight;
+  }
 
-        // --- 2. Chatbot Logic & Backend ---
-        const BACKEND_URL = 'https://kodmai2025-github-io.vercel.app/api/chat'; 
-        let chatHistory = [
-            { role: "user", parts: [{ text: "System Instruction: คุณคือ 'พี่ AI สอนภาษามือ' ผู้ช่วยสอนที่ใจดี ตอบด้วยภาษาที่เป็นกันเองและอบอุ่น มีหางเสียง 'จ้า' หรือ 'นะจ๊ะ' ตอบคำถามเฉพาะเรื่องภาษามือไทยเท่านั้น หากถามเรื่องอื่นให้บอกว่าช่วยได้เฉพาะเรื่องภาษามือนะ" }] },
-            { role: "model", parts: [{ text: "รับทราบจ้า! พี่ AI พร้อมช่วยน้องๆ เรียนรู้ภาษามือแล้วนะจ๊ะ 🧡" }] }
-        ];
+  function setThinking(on) {
+      thinkingIndicator.classList.toggle('hidden', !on);
+      if (on) chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight;
+  }
 
-        function toggleChat() {
-            const win = document.getElementById('chatbot-window');
-            const icon = document.getElementById('chat-icon');
-            const isActive = win.classList.toggle('active');
-            icon.setAttribute('data-lucide', isActive ? 'x' : 'message-circle');
-            lucide.createIcons();
-        }
+  async function handleSend() {
+      const message = (userInput.value || '').trim();
+      if (!message) return;
 
-        async function sendMessage() {
-            const input = document.getElementById('chat-input');
-            const text = input.value.trim();
-            if (!text) return;
+      addChatBubble(message, true);
+      userInput.value = '';
+      setThinking(true);
+      sendBtn.disabled = true;
 
-            appendBubble(text, 'user');
-            input.value = '';
-            document.getElementById('chat-thinking').classList.remove('hidden');
+      // เพิ่มข้อความลงในประวัติ
+      chatHistory.push({ role: "user", parts: [{ text: message }] });
 
-            chatHistory.push({ role: "user", parts: [{ text: text }] });
+      try {
+          const response = await fetch(BACKEND_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ history: chatHistory }) 
+          });
 
-            try {
-                const res = await fetch(BACKEND_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ history: chatHistory })
-                });
-                const data = await res.json();
-                const reply = data.reply || "พี่ AI งงนิดหน่อยจ้า ลองถามใหม่นะ";
-                
-                appendBubble(reply, 'ai');
-                chatHistory.push({ role: "model", parts: [{ text: reply }] });
-            } catch (err) {
-                appendBubble("ขอโทษทีจ้า พี่ AI เชื่อมต่อไม่ได้ชั่วคราว", 'ai');
-            } finally {
-                document.getElementById('chat-thinking').classList.add('hidden');
-            }
-        }
+          if (!response.ok) {
+              const errData = await response.json();
+              throw new Error(errData.error || `Server error: ${response.status}`);
+          }
 
-        function appendBubble(text, side) {
-            const msgDiv = document.getElementById('chat-messages');
-            const div = document.createElement('div');
-            div.className = `flex flex-col ${side === 'user' ? 'items-end' : 'items-start'}`;
-            const formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
-            
-            div.innerHTML = `
-                <div class="${side === 'user' ? 'bg-orange-500 text-white rounded-br-none chat-bubble-user' : 'bg-white text-gray-800 rounded-bl-none chat-bubble-ai'} p-3 rounded-2xl shadow-sm text-sm relative max-w-[85%]">
-                    ${formatted}
-                </div>
-            `;
-            msgDiv.appendChild(div);
-            msgDiv.scrollTop = msgDiv.scrollHeight;
-        }
+          const data = await response.json(); 
+          const aiReply = data.reply;
 
-        document.getElementById('send-chat').onclick = sendMessage;
-        document.getElementById('chat-input').onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
-        searchInputDesktop.oninput = filterAndRender;
-        searchInputMobile.oninput = filterAndRender;
+          chatHistory.push({ role: "model", parts: [{ text: aiReply }] });
+          setThinking(false);
+          addChatBubble(aiReply, false);
 
-        loadData();
-        lucide.createIcons();
-    </script>
+      } catch (err) {
+          console.error("Fetch Error:", err);
+          setThinking(false);
+          addChatError(`เกิดข้อผิดพลาด: ${err.message}`);
+          chatHistory.pop();
+      } finally {
+          sendBtn.disabled = false;
+      }
+  }
+
+  sendBtn.addEventListener('click', handleSend);
+  userInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter') handleSend();
+  });
+
+  // Reset Chat
+  newChatBtn.addEventListener('click', () => {
+      chatHistory = [SYSTEM_PROMPT, SYSTEM_ACK];
+      chatHistoryEl.innerHTML = `
+          <div class="flex items-start space-x-2">
+          <span class="text-2xl">🤖</span>
+          <div class="chat-bubble chat-bubble-model bg-white text-gray-800 p-3 rounded-lg max-w-lg relative border border-gray-200 shadow-sm">
+              <p>เจริญพร เริ่มบทสนทนาธรรมใหม่ได้เลย</p>
+          </div>
+          </div>`;
+      userInput.value = '';
+      setThinking(false);
+  });
+
+  // Modal Control
+  const fabToggle = document.getElementById('fab-chat-toggle');
+  const chatModal = document.getElementById('chatbot-modal');
+  const chatbotCloseBtn = document.getElementById('chatbot-close-btn');
+
+  fabToggle.addEventListener('click', () => {
+      chatModal.classList.remove('chatbot-hidden');
+      fabToggle.style.opacity = '0';
+  });
+  chatbotCloseBtn.addEventListener('click', () => {
+      chatModal.classList.add('chatbot-hidden');
+      fabToggle.style.opacity = '1';
+  });
+
+</script>
 </body>
 </html>
