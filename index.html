@@ -1,638 +1,538 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>พระไตรปิฎก 45 เล่ม (AI Chatbot)</title>
-<link href="https://fonts.googleapis.com/css2?family=Kodchasan:wght@400;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>พระไตรปิฎก 45 เล่ม (ฉบับคัมภีร์สีฟ้าลายไทย)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Maitree:wght@400;600;700&family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 
-<style>
-  :root {
-    /* ===== Royal Blue & Gold Theme ===== */
-    --bg: #f4f6f9;
-    --ink: #1a2a4d;
-    --muted: #5a6b8c;
-    --royal-blue: #0a2d6e;
-    --blue-shadow: #041a4a;
-    --gold-foil: #d4af37;
-    --gold-highlight: #fdeaa8;
-    
-    --shadow: 0 8px 16px -8px rgba(26, 42, 77, .25);
-    --shadow-hover: 0 12px 24px -10px rgba(26, 42, 77, .35);
-    --radius: 12px;
-    --gap: 14px;
-  }
+    <style>
+        :root {
+            /* Palette: Ancient Blue & Gold */
+            --paper: #fdfaf1; 
+            --ink: #1e293b; 
+            --ancient-blue: #1e3a8a; /* สีฟ้าครามโบราณ */
+            --dark-blue: #172554;
+            --gold: #d4af37;
+            --gold-bright: #fde047;
+            --border-color: #cbd5e1;
+            
+            --shadow: 0 4px 10px rgba(0,0,0,0.1);
+            --radius: 4px; 
+        }
 
-  * { box-sizing: border-box; }
-  html, body { height: 100%; }
-  
-  body {
-    margin: 0;
-    padding: 20px;
-    font-family: "Kodchasan", system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans Thai", sans-serif;
-    color: var(--ink);
-    background-color: var(--bg);
-  }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Sarabun', sans-serif;
+            background-color: #cbd5e1; 
+            background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+            color: var(--ink);
+        }
 
-  header {
-    max-width: 1100px;
-    margin: 0 auto 20px;
-    text-align: center;
-  }
-  
-  h1 {
-    margin: 0 0 6px;
-    font-weight: 700;
-    font-size: clamp(22px, 4.5vw, 30px);
-    color: var(--ink);
-  }
+        .manuscript-container {
+            max-width: 1100px;
+            margin: 10px auto;
+            background: var(--paper);
+            padding: 15px;
+            box-shadow: 0 0 40px rgba(0,0,0,0.2);
+            border: 1px solid var(--border-color);
+            position: relative;
+            min-height: 98vh;
+        }
 
-  .sub {
-    margin: 0;
-    color: var(--muted);
-    font-size: clamp(13px, 2.8vw, 15px);
-  }
+        @media(min-width: 768px) {
+            .manuscript-container {
+                margin: 40px auto;
+                padding: 40px;
+            }
+        }
 
-  /* --- Search Box --- */
-  .search-container {
-    margin: 20px auto;
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    max-width: 400px;
-  }
-  #searchInput {
-    width: 100%;
-    padding: 10px 14px;
-    border: 1px solid #ddd;
-    border-radius: var(--radius);
-    font-family: 'Kodchasan', sans-serif;
-    font-size: 14px;
-  }
-  #searchInput:focus {
-    outline: 2px solid var(--royal-blue);
-    border-color: transparent;
-  }
+        .manuscript-container::before {
+            content: "☸";
+            position: absolute;
+            top: 10px; left: 10px;
+            font-size: 24px; color: var(--gold);
+        }
 
-  .grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    max-width: 1100px;
-    margin: 18px auto 0;
-    padding-bottom: 80px; /* เผื่อที่ให้ Chatbot */
-  }
-  
-  @media(min-width: 768px) {
-    .grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  
-  @media(min-width: 1200px) {
-    .grid { grid-template-columns: repeat(3, 1fr); }
-  }
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--ancient-blue);
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+        }
 
-  /* --- New Grid Item Container --- */
-  .grid-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--gap);
-    background-color: #fff;
-    padding: var(--gap);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    transition: box-shadow .2s ease;
-  }
-  .grid-item:hover {
-    box-shadow: var(--shadow-hover);
-  }
+        h1 {
+            font-family: 'Maitree', serif;
+            font-weight: 700;
+            font-size: clamp(18px, 5vw, 32px);
+            color: var(--ancient-blue);
+            margin: 0;
+            letter-spacing: 1px;
+        }
 
-  @media(min-width: 500px) {
-    .grid-item {
-      flex-direction: row;
-      align-items: flex-start;
-      text-align: left;
-    }
-  }
+        .search-container {
+            max-width: 350px;
+            margin: 10px auto;
+        }
 
-  /* ===== New Book UI ===== */
-  a.volume {
-    position: relative;
-    display: block;
-    aspect-ratio: 3 / 4.2;
-    text-decoration: none;
-    border-radius: 8px 4px 4px 8px;
-    background: linear-gradient(135deg, var(--royal-blue), var(--blue-shadow));
-    box-shadow: var(--shadow), inset -2px 0 2px rgba(0,0,0,.2);
-    color: var(--gold-foil);
-    overflow: hidden;
-    transition: transform .2s ease, box-shadow .2s ease;
-    flex-shrink: 0;
-    width: 120px;
-  }
-  @media(min-width: 500px) {
-    a.volume { width: 140px; }
-  }
+        #searchInput {
+            width: 100%;
+            padding: 8px 15px;
+            background: #fff;
+            border: 1px solid var(--ancient-blue);
+            font-size: 14px;
+            text-align: center;
+            border-radius: 20px;
+            outline: none;
+        }
 
+        /* Grid Layout: 2 Columns on ALL devices including mobile */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); 
+            gap: 10px;
+        }
 
-  a.volume:hover {
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: var(--shadow-hover), inset -2px 0 2px rgba(0,0,0,.2);
-  }
-  
-  a.volume:active {
-    transform: translateY(1px);
-  }
-  
-  a.volume:focus-visible {
-    outline: 3px solid var(--royal-blue);
-    outline-offset: 3px;
-  }
+        @media(min-width: 1024px) {
+            .grid { gap: 20px; }
+        }
 
-  .spine {
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 20px;
-    background-color: var(--blue-shadow);
-    box-shadow: inset -1px 0 0 rgba(255,255,255,.05), inset 2px 0 4px rgba(0,0,0,.4);
-  }
-  
-  /* Gold lines on spine */
-  .spine::before, .spine::after {
-    content: '';
-    position: absolute;
-    left: 4px;
-    right: 4px;
-    height: 1px;
-    background-color: var(--gold-foil);
-    opacity: .8;
-  }
-  .spine::before { top: 20px; }
-  .spine::after { bottom: 20px; }
+        .grid-item {
+            display: flex;
+            flex-direction: column; 
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            padding: 8px;
+            transition: all 0.2s ease;
+            align-items: center;
+            border-radius: var(--radius);
+            text-align: center;
+            justify-content: space-between;
+        }
 
-  .cover {
-    position: absolute;
-    top: 8px; right: 8px; bottom: 8px; left: 28px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 8px;
-    border: 1px solid var(--gold-foil);
-    box-shadow: inset 0 0 0 3px transparent, inset 0 0 0 4px var(--gold-foil);
-    border-radius: 3px;
-  }
+        @media(min-width: 640px) {
+            .grid-item {
+                flex-direction: row;
+                text-align: left;
+                padding: 12px;
+                justify-content: flex-start;
+            }
+        }
 
-  .cover-title {
-    font-weight: 600;
-    font-size: clamp(8px, 2.2vw, 10px);
-    margin-bottom: 2px;
-    color: var(--gold-highlight);
-    letter-spacing: .5px;
-    opacity: .9;
-  }
-  
-  .cover-vol {
-    font-weight: 700;
-    font-size: clamp(14px, 4vw, 20px);
-    color: #fff;
-    text-shadow: 0 0 6px var(--gold-foil);
-    line-height: 1.1;
-  }
-  
-  .cover-cat {
-    font-size: clamp(7px, 2vw, 9px);
-    margin-top: 4px;
-    color: var(--gold-highlight);
-    opacity: .8;
-  }
-  
-  /* --- Description Box --- */
-  .description {
-    font-size: 14px;
-    line-height: 1.6;
-  }
-  .description h3 {
-      margin: 0 0 4px;
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--royal-blue);
-  }
-  .description p {
-      margin: 0;
-      font-size: 13px;
-      color: var(--muted);
-  }
+        .grid-item:hover {
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
 
-  footer {
-    max-width: 1100px;
-    margin: 24px auto 0;
-    text-align: center;
-    font-size: 12px;
-    color: var(--muted);
-    opacity: .8;
-  }
+        /* Book UI - Blue with Thai Pattern */
+        .volume-box {
+            width: 60px;
+            height: 85px;
+            flex-shrink: 0;
+            background: var(--ancient-blue);
+            border-left: 5px solid var(--dark-blue);
+            position: relative;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold-bright);
+            text-decoration: none;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
 
-  /* ===== CSS ของ Chatbot UI (Modern style) ===== */
-  .chat-bubble::before { content: ''; position: absolute; width: 0; height: 0; border-style: solid; }
-  .chat-bubble-user::before {
-    border-width: 0 12px 12px 12px; border-color: transparent transparent #0a2d6e transparent; /* Royal Blue */
-    top: -10px; right: 12px;
-  }
-  .chat-bubble-model::before {
-    border-width: 0 12px 12px 12px; border-color: transparent transparent #e5e7eb transparent;
-    top: -10px; left: 12px;
-  }
-  .gemini-thinking-bar {
-    position: relative; width: 100%; height: 4px; background-color: #e0e0e0;
-    border-radius: 2px; overflow: hidden;
-  }
-  .gemini-thinking-bar::before {
-    content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 100%;
-    background: linear-gradient(90deg, #0a2d6e, #d4af37, #0a2d6e);
-    background-size: 200% 100%; animation: thinking-gradient 2s linear infinite;
-  }
-  @keyframes thinking-gradient { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-  
-  #fab-chat-toggle {
-    position: fixed; bottom: 25px; right: 25px;
-    width: 60px; height: 60px;
-    background-color: var(--royal-blue); color: white;
-    border: none; border-radius: 50%;
-    font-size: 28px; line-height: 60px; text-align: center;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    cursor: pointer; z-index: 998;
-    transition: transform 0.2s, opacity 0.3s;
-    font-family: 'Kodchasan', sans-serif;
-  }
-  #fab-chat-toggle:hover { transform: scale(1.05); background-color: var(--blue-shadow); }
-  
-  #chatbot-modal {
-    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    z-index: 1000; transition: opacity 0.3s, transform 0.3s;
-    opacity: 1; transform: translateY(0); pointer-events: auto;
-  }
-  #chatbot-modal.chatbot-hidden {
-    opacity: 0; transform: translateY(100%); pointer-events: none;
-  }
+        @media(min-width: 640px) {
+            .volume-box {
+                width: 75px;
+                height: 105px;
+                margin-bottom: 0;
+            }
+        }
 
-</style>
+        /* ลายไทย (Thai Pattern Overlay) */
+        .volume-box::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            opacity: 0.15;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M20 0c5 10 10 10 20 10-10 0-10 5-10 10 0-5-5-5-10-10 5 10 0 10-10 20 0-10 5-10 10-20-5 0-5-5-10-10 10 0 10-5 10-10z' fill='%23ffd700' fill-rule='evenodd'/%3E%3C/svg%3E");
+            background-size: 18px 18px;
+        }
+
+        .volume-box::after {
+            content: "";
+            position: absolute;
+            inset: 3px;
+            border: 1px solid var(--gold);
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .vol-num {
+            font-family: 'Maitree', serif;
+            font-weight: 700;
+            font-size: 16px;
+            z-index: 2;
+            text-shadow: 0 0 8px rgba(0,0,0,0.5);
+        }
+
+        .description {
+            width: 100%;
+        }
+
+        @media(min-width: 640px) {
+            .description { padding-left: 12px; }
+        }
+
+        .description h3 {
+            font-family: 'Maitree', serif;
+            margin: 0;
+            font-size: 13px;
+            color: var(--ancient-blue);
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .description p {
+            margin: 2px 0 0;
+            font-size: 10px;
+            color: #64748b;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* FAB - Chatbot Button */
+        #fab-chat-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--ancient-blue);
+            color: var(--gold-bright);
+            border: 2px solid var(--gold);
+            border-radius: 50%;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 100;
+            font-family: 'Maitree', serif;
+        }
+
+        /* Chatbot Modal - Hidden by Default */
+        #chatbot-modal {
+            position: fixed;
+            bottom: 80px;
+            right: 15px;
+            width: 330px;
+            max-width: calc(100vw - 30px);
+            height: 450px;
+            background: #fff;
+            border: 4px solid var(--dark-blue);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            z-index: 1000;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .chatbot-hidden { display: none !important; }
+
+        #chat-header {
+            background: var(--ancient-blue);
+            color: white;
+            padding: 8px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        #chat-history {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .bubble {
+            padding: 8px 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            max-width: 90%;
+            word-wrap: break-word;
+        }
+
+        .bubble-ai { background: #e2e8f0; align-self: flex-start; color: #1e293b; }
+        .bubble-user { background: var(--ancient-blue); color: white; align-self: flex-end; }
+
+        .input-area {
+            padding: 8px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 5px;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 6px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        #send-btn {
+            background: var(--ancient-blue);
+            color: white;
+            padding: 0 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .thinking-bar {
+            height: 2px; width: 100%; background: linear-gradient(90deg, var(--gold), var(--ancient-blue), var(--gold));
+            background-size: 200% 100%; animation: thinking 1.5s linear infinite;
+        }
+        @keyframes thinking { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>พระไตรปิฎก 45 เล่ม</h1>
-    <p class="sub">• แตะที่ปกหนังสือเพื่อเปิดอ่านในแท็บใหม่</p>
-    <div class="search-container">
-      <input type="text" id="searchInput" placeholder="ค้นหา เช่น พิมพ์ '1' หรือ '25'">
+
+<div class="manuscript-container">
+    <header>
+        <h1>พระไตรปิฎก 45 เล่ม</h1>
+        <p style="font-size: 11px; opacity: 0.8; color: var(--ancient-blue); font-weight: 600;">ฉบับดิจิทัลคัมภีร์ครามลายทอง</p>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="ค้นหาเลขเล่ม (1-45)">
+        </div>
+    </header>
+
+    <div class="grid" id="grid"></div>
+
+    <footer style="margin-top: 20px; text-align: center; font-size: 10px; opacity: 0.6; border-top: 1px solid #e2e8f0; padding-top: 10px;">
+        © 2025 Crow Studio | ธรรมทานเพื่อมวลมนุษยชาติ
+    </footer>
+</div>
+
+<!-- Chatbot FAB -->
+<button id="fab-chat-toggle" title="ถาม AI ธรรมะ">Ai</button>
+
+<!-- Chatbot UI - Hidden initially -->
+<div id="chatbot-modal" class="chatbot-hidden">
+    <div id="chat-header">
+        <span style="font-size: 13px;">☸ AI วิสัชนาธรรม</span>
+        <button id="close-chat" style="font-size: 20px; line-height: 1;">×</button>
     </div>
-  </header>
-
-  <div class="grid" id="grid" aria-label="รายการพระไตรปิฎก 45 เล่ม"></div>
-
-  <footer>
-    <p class="footer-links">
-      © 2025 Crow Studio |
-      <a href="https://sites.google.com/view/privacy-policy-pdpa-crow-studi/%E0%B8%AB%E0%B8%99%E0%B8%B2%E0%B9%81%E0%B8%A3%E0%B8%81">นโยบายความเป็นส่วนตัว</a> |
-      <a href="ลิงก์ข้อตกลง">ข้อตกลงการใช้งาน</a>
-    </p>
-  </footer>
-
-  <button id="fab-chat-toggle" title="ถาม AI พระไตรปิฎก">Ai</button>
-
-  <div id="chatbot-modal" class="chatbot-hidden">
-    <div class="flex flex-col h-screen bg-gray-100">
-      <header class="bg-[#0a2d6e] text-white p-4 flex justify-between items-center shadow-md">
-        <div class="flex items-center gap-2">
-            <span class="text-2xl text-[#d4af37]">☸️</span>
-            <h1 class="text-lg font-bold font-sans text-white m-0">AI พระไตรปิฎก</h1>
-        </div>
-        <div>
-          <button id="new-chat-btn" class="bg-[#d4af37] hover:bg-yellow-600 text-[#0a2d6e] font-bold py-1 px-3 rounded mr-2 text-sm">
-            เริ่มใหม่
-          </button>
-          <button id="chatbot-close-btn" class="bg-gray-700 hover:bg-gray-900 text-white font-bold py-1 px-3 rounded text-sm">
-            ปิด
-          </button>
-        </div>
-      </header>
-
-      <main id="chat-history" class="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-        <div class="flex items-start space-x-2">
-          <span class="text-2xl">🤖</span>
-          <div class="chat-bubble chat-bubble-model bg-white text-gray-800 p-3 rounded-lg max-w-lg relative border border-gray-200 shadow-sm">
-            <p>เจริญพร... อาตมาคือ AI ผู้ช่วยค้นหาและอธิบายพระไตรปิฎก โยมสงสัยในธรรมข้อใด หรือต้องการค้นหาเล่มไหน สอบถามได้เลย</p>
-          </div>
-        </div>
-      </main>
-
-      <div id="thinking-indicator" class="p-4 hidden bg-gray-50">
-        <div class="flex items-center space-x-2">
-          <span class="text-2xl">🤖</span>
-          <div class="chat-bubble chat-bubble-model bg-white text-gray-800 p-3 rounded-lg max-w-lg relative border border-gray-200">
-            <div class="gemini-thinking-bar"></div>
-          </div>
-        </div>
-      </div>
-
-      <footer class="bg-white p-3 shadow-inner border-t border-gray-200 m-0 w-full max-w-full">
-        <div class="flex space-x-2">
-          <input id="user-input" type="text" placeholder="พิมพ์คำถามธรรมะ..." class="flex-1 p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#0a2d6e] font-sans text-base">
-          <button id="send-btn" class="bg-[#0a2d6e] hover:bg-[#041a4a] text-white font-bold py-2 px-4 rounded-xl shadow-sm">
-            ส่ง
-          </button>
-        </div>
-      </footer>
+    <div id="chat-history">
+        <div class="bubble bubble-ai">เจริญพร... มีข้อสงสัยในพระไตรปิฎกส่วนใด สอบถามอาตมาได้เลย</div>
     </div>
-  </div>
+    <div id="thinking" class="hidden"><div class="thinking-bar"></div></div>
+    <div class="input-area">
+        <input type="text" id="user-input" placeholder="ถามปัญหาธรรม...">
+        <button id="send-btn">ส่ง</button>
+    </div>
+</div>
 
 <script>
-  /* =========================================
-     1. สคริปต์แสดงผลหนังสือ (เหมือนเดิม)
-     ========================================= */
-  const links = [
-    "https://drive.google.com/file/d/1DS92iGBd8GI4ZSKhkKVMuAlwBNdgnMfT/view?usp=sharing",
-    "https://drive.google.com/file/d/1638kDq0hXXwjLPMozk1cAGt4qBSnk_xE/view?usp=sharing",
-    "https://drive.google.com/file/d/17sj3c-UF2IrCSbYqIf24Lj-vs2zOaXi0/view?usp=sharing",
-    "https://drive.google.com/file/d/12JPD1-eLAdPKeCCMaanF6SN9IZ7fDGg5/view?usp=sharing",
-    "https://drive.google.com/file/d/1Q6_ZqpAKYUG2ffpNss5tDjCLvPUTIJdN/view?usp=sharing",
-    "https://drive.google.com/file/d/1l782F_TESMPGXATyP86G2wvWH3fYJSXi/view?usp=sharing",
-    "https://drive.google.com/file/d/1Ji96yfJDvpHMVPy1sQu07RaXslG_Jagw/view?usp=sharing",
-    "https://drive.google.com/file/d/1sagLOlIrTHJSSRZHoHkB3CGOmqRsHesk/view?usp=drive_link",
-    "https://drive.google.com/file/d/1UpbGv2dcZM9qFPTo_dlSAiB60fDLj5dP/view?usp=drive_link",
-    "https://drive.google.com/file/d/1cR7FvuofyAw3PBvuI4wPTCZ6dEBEFdjQ/view?usp=drive_link",
-    "https://drive.google.com/file/d/1sFjBVFT4VnFsM-fzxmBUqx9iT96ramVC/view?usp=drive_link",
-    "https://drive.google.com/file/d/1KzPXthAWXOMBlTIqmP3N8hIeleScYXTn/view?usp=drive_link",
-    "https://drive.google.com/file/d/1UDt_Ss4ZnyS6I9A8GbxpX8rpDIl9QiYK/view?usp=drive_link",
-    "https://drive.google.com/file/d/14GfX0djPOAaxfl4WNThnQ6Vv9ZzQBQxp/view?usp=drive_link",
-    "https://drive.google.com/file/d/1zNj800FQArrtL-P27KFfL0jTPGVeqQLP/view?usp=drive_link",
-    "https://drive.google.com/file/d/1MmzizY6xg84V_Se1F7SsPfCzoIeECzLq/view?usp=drive_link",
-    "https://drive.google.com/file/d/1KcRsUSnS_rUSz4MSj2921MARRpUkNcsm/view?usp=drive_link",
-    "https://drive.google.com/file/d/1ZHaOi6yZtPBKBUDD4u5LKfH-euDOwvfd/view?usp=drive_link",
-    "https://drive.google.com/file/d/1UDQ2m7XwgltASrO8qM0JVzbO4E4XYyw1/view?usp=drive_link",
-    "https://drive.google.com/file/d/1tOLKO0HNmAa4MzDZPv2r4Q_BmEw_LsPw/view?usp=drive_link",
-    "https://drive.google.com/file/d/1CiwzHnuGX6asG5z3IRvqNiHUPqpcvFnH/view?usp=drive_link",
-    "https://drive.google.com/file/d/1dcixOg41U3waIoy7Epuvaw8t4OOY5S4A/view?usp=drive_link",
-    "https://drive.google.com/file/d/1Qyx4mGQK833evtnqK649ziMEMH7U39PG/view?usp=drive_link",
-    "https://drive.google.com/file/d/1chtA9Hp7UgUVsfHfdihyhjqZzSNLu2s_/view?usp=drive_link",
-    "https://drive.google.com/file/d/1kb0fw5yXBP7uZuiy-gEj18Ct0kEeye-d/view?usp=drive_link",
-    "https://drive.google.com/file/d/17glsqiMEhz4QZFKMhaYIXHw6B_yCS3Rn/view?usp=drive_link",
-    "https://drive.google.com/file/d/1I6_7NNxWDeFho4MHY3gvyPURaNTT9JQI/view?usp=drive_link",
-    "https://drive.google.com/file/d/1JprJquzq7bmBFC5lCIwebc9rH7aVR3Or/view?usp=drive_link",
-    "https://drive.google.com/file/d/1IX_X20BpfI_6RIJ_txCs0ZTl8370oSGB/view?usp=drive_link",
-    "https://drive.google.com/file/d/1CY370T9OSgZlqJn2znmpZiivABLtBXR7/view?usp=drive_link",
-    "https://drive.google.com/file/d/15qJr5WEq2_Hb6AZh7f47GofHazNwGGqj/view?usp=drive_link",
-    "https://drive.google.com/file/d/14TTYXHSRsBeFmgtT63SDQcRTMmnonAWT/view?usp=drive_link",
-    "https://drive.google.com/file/d/1PMAQZPLsYwtAgrLHV7HXoGgc3zcBU5Aw/view?usp=drive_link",
-    "https://drive.gdrive.google.com/file/d/1JC6jfY3sk5In2EUWeB5m6v4a2opuZiQD/view?usp=drive_link",
-    "https://drive.google.com/file/d/1Yiz_yOtFNvJYbhNclIBGCC4NvXdlZLmz/view?usp=drive_link",
-    "https://drive.google.com/file/d/1E2APLRr1Tm1pag0EZdbZIRAmOY7nbIgB/view?usp=drive_link",
-    "https://drive.google.com/file/d/169SjaiPXgBdBWsg1cEUZ-lR4O-yMpaVh/view?usp=drive_link",
-    "https://drive.google.com/file/d/1PXnxAhrbngagFFZVkRalGvSeKfNHYd1i/view?usp=drive_link",
-    "https://drive.google.com/file/d/1MOfGC_c0XQTd3qQdPKXOaEpIfuzxq-U5/view?usp=drive_link",
-    "https://drive.google.com/file/d/1GyVl8iq26-PocVA7uNQGTp0Z_XZ8s9dh/view?usp=drive_link",
-    "https://drive.google.com/file/d/1E0i4MRhwmFnKzdH0qlyQsjq3yqMzyvcY/view?usp=drive_link",
-    "https://drive.google.com/file/d/1Z9E731FVCY_SW5-PS0KyC4hWearJDeC2/view?usp=drive_link",
-    "https://drive.google.com/file/d/1X08279nx9-L39uoQ6iaBwUoQRqYZIpl5/view?usp=drive_link",
-    "https://drive.google.com/file/d/1_cEe2Ydlaw00WaewmOsV5ou_0k3RCPXl/view?usp=drive_link",
-    "https://drive.google.com/file/d/1ZGy1eDJGgKICw_08rKAwgjOm1YVN7hzA/view?usp=drive_link",
-  ];
-  
-  const descriptions = [
-    "มหาวิภังค์ ภาค 1 ว่าด้วยปาราชิก สังฆาทิเสส และอนิยตสิกขาบท",
-    "มหาวิภังค์ ภาค 2 ว่าด้วยนิสสัคคิยปาจิตตีย์ ปาจิตตีย์ ปาฏิเทสนียะ และเสขิยวัตร",
-    "ภิกขุนีวิภังค์ ว่าด้วยสิกขาบทของภิกษุณี",
-    "มหาวรรค ภาค 1 ว่าด้วยการอุปสมบท อุโบสถ จำพรรษา และปวารณา",
-    "มหาวรรค ภาค 2 ว่าด้วยเรื่องเครื่องหนัง เภสัช กฐิน และจีวร",
-    "จูฬวรรค ภาค 1 ว่าด้วยเรื่องกรรม สังฆเภท และวัตรต่างๆ",
-    "จูฬวรรค ภาค 2 ว่าด้วยเสนาสนะ สังฆกรรม และการแตกสงฆ์",
-    "ปริวารวรรค ว่าด้วยข้อปลีกย่อย คำถามคำตอบสรุปพระวินัย",
-    "สีลขันธวรรค ว่าด้วยศีล จริยวัตร และข้อปฏิบัติของพระภิกษุ",
-    "มหาวรรค ว่าด้วยพระสูตรขนาดยาว 10 สูตร",
-    "ปาฏิกวรรค ว่าด้วยพระสูตรเบ็ดเตล็ดต่างๆ",
-    "มัชฌิมนิกาย มูลปัณณาสก์",
-    "มัชฌิมนิกาย มัชฌิมปัณณาสก์",
-    "มัชฌิมนิกาย อุปริปัณณาสก์",
-    "สังยุตตนิกาย สคาถวรรค",
-    "สังยุตตนิกาย นิทานวรรค",
-    "สังยุตตนิกาย ขันธวารวรรค",
-    "สังยุตตนิกาย สฬายตนวรรค",
-    "สังยุตตนิกาย มหาวารวรรค",
-    "อังคุตตรนิกาย เอก-ทุก-ติกนิบาต",
-    "อังคุตตรนิกาย จตุกกนิบาต",
-    "อังคุตตรนิกาย ปัญจก-ฉักกนิบาต",
-    "อังคุตตรนิกาย สัตตก-อัฏฐก-นวกนิบาต",
-    "อังคุตตรนิกาย ทสก-เอกาทสกนิบาต",
-    "ขุททกนิกาย ภาค 1 รวมคาถาธรรมบท เถรคาถา เถรีคาถา",
-    "ขุททกนิกาย ภาค 2 รวมชาดก",
-    "ขุททกนิกาย ภาค 3 รวมชาดก",
-    "ขุททกนิกาย ภาค 4 รวมชาดก",
-    "ขุททกนิกาย ภาค 5 รวมชาดก",
-    "ขุททกนิกาย ภาค 6 รวมชาดก",
-    "ขุททกนิกาย ภาค 7 รวมชาดก",
-    "ขุททกนิกาย ภาค 8 รวมชาดก",
-    "ขุททกนิกาย ภาค 9 รวมชาดก",
-    "ธัมมสังคณีปกรณ์",
-    "วิภังคปกรณ์",
-    "ธาตุกถา-ปุคคลบัญญัติปกรณ์",
-    "กถาวัตถุปกรณ์",
-    "ยมกปกรณ์ ภาค 1",
-    "ยมกปกรณ์ ภาค 2",
-    "ยมกปกรณ์ ภาค 3",
-    "ปัฏฐานปกรณ์ ภาค 1",
-    "ปัฏฐานปกรณ์ ภาค 2",
-    "ปัฏฐานปกรณ์ ภาค 3",
-    "ปัฏฐานปกรณ์ ภาค 4",
-    "ปัฏฐานปกรณ์ ภาค 5",
-  ];
+    // --- URLs ของหนังสือ ---
+    const links = [
+        "https://drive.google.com/file/d/1DS92iGBd8GI4ZSKhkKVMuAlwBNdgnMfT/view?usp=sharing",
+        "https://drive.google.com/file/d/1638kDq0hXXwjLPMozk1cAGt4qBSnk_xE/view?usp=sharing",
+        "https://drive.google.com/file/d/17sj3c-UF2IrCSbYqIf24Lj-vs2zOaXi0/view?usp=sharing",
+        "https://drive.google.com/file/d/12JPD1-eLAdPKeCCMaanF6SN9IZ7fDGg5/view?usp=sharing",
+        "https://drive.google.com/file/d/1Q6_ZqpAKYUG2ffpNss5tDjCLvPUTIJdN/view?usp=sharing",
+        "https://drive.google.com/file/d/1l782F_TESMPGXATyP86G2wvWH3fYJSXi/view?usp=sharing",
+        "https://drive.google.com/file/d/1Ji96yfJDvpHMVPy1sQu07RaXslG_Jagw/view?usp=sharing",
+        "https://drive.google.com/file/d/1sagLOlIrTHJSSRZHoHkB3CGOmqRsHesk/view?usp=drive_link",
+        "https://drive.google.com/file/d/1UpbGv2dcZM9qFPTo_dlSAiB60fDLj5dP/view?usp=drive_link",
+        "https://drive.google.com/file/d/1cR7FvuofyAw3PBvuI4wPTCZ6dEBEFdjQ/view?usp=drive_link",
+        "https://drive.google.com/file/d/1sFjBVFT4VnFsM-fzxmBUqx9iT96ramVC/view?usp=drive_link",
+        "https://drive.google.com/file/d/1KzPXthAWXOMBlTIqmP3N8hIeleScYXTn/view?usp=drive_link",
+        "https://drive.google.com/file/d/1UDt_Ss4ZnyS6I9A8GbxpX8rpDIl9QiYK/view?usp=drive_link",
+        "https://drive.google.com/file/d/14GfX0djPOAaxfl4WNThnQ6Vv9ZzQBQxp/view?usp=drive_link",
+        "https://drive.google.com/file/d/1zNj800FQArrtL-P27KFfL0jTPGVeqQLP/view?usp=drive_link",
+        "https://drive.google.com/file/d/1MmzizY6xg84V_Se1F7SsPfCzoIeECzLq/view?usp=drive_link",
+        "https://drive.google.com/file/d/1KcRsUSnS_rUSz4MSj2921MARRpUkNcsm/view?usp=drive_link",
+        "https://drive.google.com/file/d/1ZHaOi6yZtPBKBUDD4u5LKfH-euDOwvfd/view?usp=drive_link",
+        "https://drive.google.com/file/d/1UDQ2m7XwgltASrO8qM0JVzbO4E4XYyw1/view?usp=drive_link",
+        "https://drive.google.com/file/d/1tOLKO0HNmAa4MzDZPv2r4Q_BmEw_LsPw/view?usp=drive_link",
+        "https://drive.google.com/file/d/1CiwzHnuGX6asG5z3IRvqNiHUPqpcvFnH/view?usp=drive_link",
+        "https://drive.google.com/file/d/1dcixOg41U3waIoy7Epuvaw8t4OOY5S4A/view?usp=drive_link",
+        "https://drive.google.com/file/d/1Qyx4mGQK833evtnqK649ziMEMH7U39PG/view?usp=drive_link",
+        "https://drive.google.com/file/d/1chtA9Hp7UgUVsfHfdihyhjqZzSNLu2s_/view?usp=drive_link",
+        "https://drive.google.com/file/d/1kb0fw5yXBP7uZuiy-gEj18Ct0kEeye-d/view?usp=drive_link",
+        "https://drive.google.com/file/d/17glsqiMEhz4QZFKMhaYIXHw6B_yCS3Rn/view?usp=drive_link",
+        "https://drive.google.com/file/d/1I6_7NNxWDeFho4MHY3gvyPURaNTT9JQI/view?usp=drive_link",
+        "https://drive.google.com/file/d/1JprJquzq7bmBFC5lCIwebc9rH7aVR3Or/view?usp=drive_link",
+        "https://drive.google.com/file/d/1IX_X20BpfI_6RIJ_txCs0ZTl8370oSGB/view?usp=drive_link",
+        "https://drive.google.com/file/d/1CY370T9OSgZlqJn2znmpZiivABLtBXR7/view?usp=drive_link",
+        "https://drive.google.com/file/d/15qJr5WEq2_Hb6AZh7f47GofHazNwGGqj/view?usp=drive_link",
+        "https://drive.google.com/file/d/14TTYXHSRsBeFmgtT63SDQcRTMmnonAWT/view?usp=drive_link",
+        "https://drive.google.com/file/d/1PMAQZPLsYwtAgrLHV7HXoGgc3zcBU5Aw/view?usp=drive_link",
+        "https://drive.google.com/file/d/1JC6jfY3sk5In2EUWeB5m6v4a2opuZiQD/view?usp=drive_link",
+        "https://drive.google.com/file/d/1Yiz_yOtFNvJYbhNclIBGCC4NvXdlZLmz/view?usp=drive_link",
+        "https://drive.google.com/file/d/1E2APLRr1Tm1pag0EZdbZIRAmOY7nbIgB/view?usp=drive_link",
+        "https://drive.google.com/file/d/169SjaiPXgBdBWsg1cEUZ-lR4O-yMpaVh/view?usp=drive_link",
+        "https://drive.google.com/file/d/1PXnxAhrbngagFFZVkRalGvSeKfNHYd1i/view?usp=drive_link",
+        "https://drive.google.com/file/d/1MOfGC_c0XQTd3qQdPKXOaEpIfuzxq-U5/view?usp=drive_link",
+        "https://drive.google.com/file/d/1GyVl8iq26-PocVA7uNQGTp0Z_XZ8s9dh/view?usp=drive_link",
+        "https://drive.google.com/file/d/1E0i4MRhwmFnKzdH0qlyQsjq3yqMzyvcY/view?usp=drive_link",
+        "https://drive.google.com/file/d/1Z9E731FVCY_SW5-PS0KyC4hWearJDeC2/view?usp=drive_link",
+        "https://drive.google.com/file/d/1X08279nx9-L39uoQ6iaBwUoQRqYZIpl5/view?usp=drive_link",
+        "https://drive.google.com/file/d/1_cEe2Ydlaw00WaewmOsV5ou_0k3RCPXl/view?usp=drive_link",
+        "https://drive.google.com/file/d/1ZGy1eDJGgKICw_08rKAwgjOm1YVN7hzA/view?usp=drive_link",
+    ];
 
-  const volumes = Array.from({length: 45}, (_, i) => {
-    const n = i + 1;
-    let cat_full;
-    if (n <= 8) { cat_full = 'พระวินัยปิฎก'; } 
-    else if (n <= 33) { cat_full = 'พระสุตตันตปิฎก'; } 
-    else { cat_full = 'พระอภิธรรมปิฎก'; }
-    return { n, cat_full, link: links[i], description: descriptions[i] };
-  });
+    const descriptions = [
+        "มหาวิภังค์ ภาค 1 - ปาราชิก สังฆาทิเสส",
+        "มหาวิภังค์ ภาค 2 - นิสสัคคิยปาจิตตีย์",
+        "ภิกขุนีวิภังค์ - สิกขาบทภิกษุณี",
+        "มหาวรรค ภาค 1 - อุปสมบท อุโบสถ",
+        "มหาวรรค ภาค 2 - เครื่องหนัง เภสัช กฐิน",
+        "จูฬวรรค ภาค 1 - กรรม สังฆเภท",
+        "จูฬวรรค ภาค 2 - เสนาสนะ สังฆกรรม",
+        "ปริวาร - ข้อปลีกย่อยพระวินัย",
+        "สีลขันธวรรค - ศีลและจริยวัตร",
+        "มหาวรรค - พระสูตรยาว 10 สูตร",
+        "ปาฏิกวรรค - พระสูตรเบ็ดเตล็ด",
+        "มัชฌิมนิกาย มูลปัณณาสก์",
+        "มัชฌิมนิกาย มัชฌิมปัณณาสก์",
+        "มัชฌิมนิกาย อุปริปัณณาสก์",
+        "สังยุตตนิกาย สคาถวรรค",
+        "สังยุตตนิกาย นิทานวรรค",
+        "สังยุตตนิกาย ขันธวารวรรค",
+        "สังยุตตนิกาย สฬายตนวรรค",
+        "สังยุตตนิกาย มหาวารวรรค",
+        "อังคุตตรนิกาย เอก-ทุก-ติกนิบาต",
+        "อังคุตตรนิกาย จตุกกนิบาต",
+        "อังคุตตรนิกาย ปัญจก-ฉักกนิบาต",
+        "อังคุตตรนิกาย สัตตก-อัฏฐก-นวกนิบาต",
+        "อังคุตตรนิกาย ทสก-เอกาทสกนิบาต",
+        "ขุททกนิกาย ภาค 1 - คาถาธรรมบท",
+        "ขุททกนิกาย ภาค 2 - รวมชาดก",
+        "ขุททกนิกาย ภาค 3 - รวมชาดก",
+        "ขุททกนิกาย ภาค 4 - รวมชาดก",
+        "ขุททกนิกาย ภาค 5 - รวมชาดก",
+        "ขุททกนิกาย ภาค 6 - รวมชาดก",
+        "ขุททกนิกาย ภาค 7 - รวมชาดก",
+        "ขุททกนิกาย ภาค 8 - รวมชาดก",
+        "ขุททกนิกาย ภาค 9 - รวมชาดก",
+        "ธัมมสังคณีปกรณ์",
+        "วิภังคปกรณ์",
+        "ธาตุกถา-ปุคคลบัญญัติปกรณ์",
+        "กถาวัตถุปกรณ์",
+        "ยมกปกรณ์ ภาค 1",
+        "ยมกปกรณ์ ภาค 2",
+        "ยมกปกรณ์ ภาค 3",
+        "ปัฏฐานปกรณ์ ภาค 1",
+        "ปัฏฐานปกรณ์ ภาค 2",
+        "ปัฏฐานปกรณ์ ภาค 3",
+        "ปัฏฐานปกรณ์ ภาค 4",
+        "ปัฏฐานปกรณ์ ภาค 5",
+    ];
 
-  const grid = document.getElementById('grid');
-  const searchInput = document.getElementById('searchInput');
+    const volumes = Array.from({length: 45}, (_, i) => ({
+        n: i + 1,
+        cat: (i+1) <= 8 ? 'พระวินัย' : (i+1) <= 33 ? 'พระสูตร' : 'พระอภิธรรม',
+        link: links[i],
+        desc: descriptions[i]
+    }));
 
-  function renderBooks(bookData) {
-    grid.innerHTML = ''; 
-    for (const v of bookData) {
-      const item = document.createElement('div');
-      item.className = 'grid-item';
-      const a = document.createElement('a');
-      a.className = 'volume';
-      a.href = v.link || '#';
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      a.setAttribute('aria-label', `เปิดอ่าน พระไตรปิฎก เล่มที่ ${v.n}`);
-      a.innerHTML = `
-        <div class="spine" aria-hidden="true"></div>
-        <div class="cover" aria-hidden="true">
-            <div class="cover-title">พระไตรปิฎก</div>
-            <div class="cover-vol">เล่ม ${v.n}</div>
-            <div class="cover-cat">${v.cat_full}</div>
-        </div>
-      `;
-      const desc = document.createElement('div');
-      desc.className = 'description';
-      desc.innerHTML = `
-        <h3>${v.cat_full}</h3>
-        <p>${v.description || 'ไม่มีข้อมูลย่อสำหรับเล่มนี้'}</p>
-      `;
-      item.appendChild(a);
-      item.appendChild(desc);
-      grid.appendChild(item);
+    const grid = document.getElementById('grid');
+    const searchInput = document.getElementById('searchInput');
+
+    function render(data) {
+        grid.innerHTML = '';
+        data.forEach(v => {
+            const item = document.createElement('div');
+            item.className = 'grid-item';
+            item.innerHTML = `
+                <a href="${v.link}" target="_blank" class="volume-box">
+                    <span class="vol-num">${v.n}</span>
+                </a>
+                <div class="description">
+                    <h3>เล่มที่ ${v.n}</h3>
+                    <p>${v.desc}</p>
+                </div>
+            `;
+            grid.appendChild(item);
+        });
     }
-  }
 
-  function handleSearch() {
-    const query = searchInput.value.trim().toLowerCase();
-    if (query === '') { renderBooks(volumes); } 
-    else {
-      const filteredVolumes = volumes.filter(v => v.n.toString().includes(query));
-      renderBooks(filteredVolumes);
+    searchInput.oninput = (e) => {
+        const q = e.target.value.trim();
+        render(volumes.filter(v => v.n.toString().includes(q)));
+    };
+
+    // แสดงผลครั้งแรก
+    render(volumes);
+
+    // --- Chatbot Logic ---
+    const BACKEND_URL = 'https://solitary-leaf-3661.tontakankeawpang321.workers.dev';
+    const fab = document.getElementById('fab-chat-toggle');
+    const modal = document.getElementById('chatbot-modal');
+    const closeChat = document.getElementById('close-chat');
+    const sendBtn = document.getElementById('send-btn');
+    const userInput = document.getElementById('user-input');
+    const history = document.getElementById('chat-history');
+    const thinking = document.getElementById('thinking');
+
+    // Toggle Modal visibility
+    fab.onclick = () => modal.classList.toggle('chatbot-hidden');
+    closeChat.onclick = () => modal.classList.add('chatbot-hidden');
+
+    async function handleSend() {
+        const text = userInput.value.trim();
+        if(!text) return;
+        
+        // เพิ่ม Bubble ของผู้ใช้
+        const uB = document.createElement('div'); 
+        uB.className='bubble bubble-user'; 
+        uB.innerText=text;
+        history.appendChild(uB); 
+        userInput.value=''; 
+        history.scrollTop=history.scrollHeight;
+        
+        thinking.classList.remove('hidden');
+        
+        try {
+            const res = await fetch(BACKEND_URL, {
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ history: [{role:"user", parts:[{text}]}] })
+            });
+            const data = await res.json();
+            
+            // เพิ่ม Bubble ของ AI
+            const aB = document.createElement('div'); 
+            aB.className='bubble bubble-ai'; 
+            aB.innerText=data.reply;
+            history.appendChild(aB);
+        } catch(e) {
+            const eB = document.createElement('div'); 
+            eB.className='bubble bubble-ai'; 
+            eB.innerText="ขออภัย เจริญพร มีข้อผิดพลาดในการเชื่อมต่อ";
+            history.appendChild(eB);
+        } finally { 
+            thinking.classList.add('hidden'); 
+            history.scrollTop=history.scrollHeight; 
+        }
     }
-  }
 
-  searchInput.addEventListener('input', handleSearch);
-  renderBooks(volumes);
-
-  /* =========================================
-     2. ส่วน Chatbot AI (Backend)
-     ========================================= */
-  // URL Backend ของคุณ
-  const BACKEND_URL = 'https://solitary-leaf-3661.tontakankeawpang321.workers.dev';
-
-  // System Prompt: ปรับบุคลิกให้เป็นผู้เชี่ยวชาญพระไตรปิฎก
-  const SYSTEM_PROMPT = {
-      role: "user",
-      parts: [{ text: "System Instruction: คุณคือ AI ผู้เชี่ยวชาญด้าน 'พระไตรปิฎก 45 เล่ม' และ 'พุทธศาสนา' มีหน้าที่ช่วยค้นหา ตอบคำถามเกี่ยวกับหลักธรรม ชาดก พระวินัย พระสูตร และพระอภิธรรม ให้ตอบด้วยภาษาสุภาพ นุ่มนวล (ใช้สรรพนามว่า 'อาตมา' หรือ 'ผู้ช่วย' ตามเหมาะสม) ห้ามตอบเรื่องกฎหมาย ถ้าผู้ใช้ถามเรื่องอื่นให้วกกลับมาเรื่องธรรมะ" }]
-  };
-  const SYSTEM_ACK = {
-      role: "model",
-      parts: [{ text: "รับทราบ เจริญพร อาตมาพร้อมให้ความรู้ด้านพระไตรปิฎกแล้ว" }]
-  };
-
-  let chatHistory = [SYSTEM_PROMPT, SYSTEM_ACK];
-
-  const chatHistoryEl = document.getElementById('chat-history');
-  const userInput = document.getElementById('user-input');
-  const sendBtn = document.getElementById('send-btn');
-  const newChatBtn = document.getElementById('new-chat-btn');
-  const thinkingIndicator = document.getElementById('thinking-indicator');
-
-  function addChatBubble(message, isUser = true) {
-      const bubbleType = isUser ? 'user' : 'model';
-      const icon = isUser ? '👤' : '🤖';
-      // ปรับสี Bubble ให้เข้ากับธีม Royal Blue
-      const bgClass = isUser ? 'bg-[#0a2d6e] text-white' : 'bg-white text-gray-800 border border-gray-200';
-      
-      const wrap = document.createElement('div');
-      wrap.className = `flex items-start space-x-2 ${isUser ? 'flex-row-reverse space-x-reverse' : ''}`;
-      
-      const bubble = document.createElement('div');
-      bubble.className = `chat-bubble chat-bubble-${bubbleType} ${bgClass} p-3 rounded-lg max-w-lg relative shadow-sm`;
-      bubble.innerHTML = `<p>${message.replace(/\n/g, '<br>')}</p>`;
-      
-      wrap.innerHTML = `<span class="text-2xl">${icon}</span>`;
-      wrap.appendChild(bubble);
-      
-      chatHistoryEl.appendChild(wrap);
-      chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight;
-  }
-
-  function addChatError(message) {
-      const w = document.createElement('div');
-      w.className = 'flex justify-center my-2';
-      w.innerHTML = `<span class="bg-red-100 text-red-700 text-xs font-semibold px-3 py-1 rounded-full">${message}</span>`;
-      chatHistoryEl.appendChild(w);
-      chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight;
-  }
-
-  function setThinking(on) {
-      thinkingIndicator.classList.toggle('hidden', !on);
-      if (on) chatHistoryEl.scrollTop = chatHistoryEl.scrollHeight;
-  }
-
-  async function handleSend() {
-      const message = (userInput.value || '').trim();
-      if (!message) return;
-
-      addChatBubble(message, true);
-      userInput.value = '';
-      setThinking(true);
-      sendBtn.disabled = true;
-
-      // เพิ่มข้อความลงในประวัติ
-      chatHistory.push({ role: "user", parts: [{ text: message }] });
-
-      try {
-          const response = await fetch(BACKEND_URL, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ history: chatHistory }) 
-          });
-
-          if (!response.ok) {
-              const errData = await response.json();
-              throw new Error(errData.error || `Server error: ${response.status}`);
-          }
-
-          const data = await response.json(); 
-          const aiReply = data.reply;
-
-          chatHistory.push({ role: "model", parts: [{ text: aiReply }] });
-          setThinking(false);
-          addChatBubble(aiReply, false);
-
-      } catch (err) {
-          console.error("Fetch Error:", err);
-          setThinking(false);
-          addChatError(`เกิดข้อผิดพลาด: ${err.message}`);
-          chatHistory.pop();
-      } finally {
-          sendBtn.disabled = false;
-      }
-  }
-
-  sendBtn.addEventListener('click', handleSend);
-  userInput.addEventListener('keydown', e => {
-      if (e.key === 'Enter') handleSend();
-  });
-
-  // Reset Chat
-  newChatBtn.addEventListener('click', () => {
-      chatHistory = [SYSTEM_PROMPT, SYSTEM_ACK];
-      chatHistoryEl.innerHTML = `
-          <div class="flex items-start space-x-2">
-          <span class="text-2xl">🤖</span>
-          <div class="chat-bubble chat-bubble-model bg-white text-gray-800 p-3 rounded-lg max-w-lg relative border border-gray-200 shadow-sm">
-              <p>เจริญพร เริ่มบทสนทนาธรรมใหม่ได้เลย</p>
-          </div>
-          </div>`;
-      userInput.value = '';
-      setThinking(false);
-  });
-
-  // Modal Control
-  const fabToggle = document.getElementById('fab-chat-toggle');
-  const chatModal = document.getElementById('chatbot-modal');
-  const chatbotCloseBtn = document.getElementById('chatbot-close-btn');
-
-  fabToggle.addEventListener('click', () => {
-      chatModal.classList.remove('chatbot-hidden');
-      fabToggle.style.opacity = '0';
-  });
-  chatbotCloseBtn.addEventListener('click', () => {
-      chatModal.classList.add('chatbot-hidden');
-      fabToggle.style.opacity = '1';
-  });
-
+    sendBtn.onclick = handleSend;
+    userInput.onkeydown = (e) => e.key === 'Enter' && handleSend();
 </script>
 </body>
 </html>
