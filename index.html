@@ -226,6 +226,50 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             z-index: 100;
             font-family: 'Maitree', serif;
+            transition: transform 0.2s;
+        }
+        #fab-chat-toggle:hover { transform: scale(1.1); }
+
+        /* FAB - Check-in Button (Gold) */
+        #fab-checkin {
+            position: fixed;
+            bottom: 85px; /* อยู่เหนือปุ่ม AI */
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--gold-bright), var(--gold));
+            color: var(--dark-blue);
+            border: 2px solid #fff;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 99; /* อยู่ใต้ Modal Chatbot แต่เหนือเนื้อหา */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s;
+        }
+        #fab-checkin:active { transform: scale(0.9); }
+        #fab-checkin:hover { transform: scale(1.1); }
+
+        /* Badge Number above Calendar */
+        #checkin-badge {
+            position: fixed;
+            bottom: 125px; /* อยู่เหนือปุ่มปฏิทิน */
+            right: 25px;   /* จัดกึ่งกลางปุ่ม (ปุ่มขวา 20 กว้าง 50 = กึ่งกลาง 45) */
+            background-color: var(--ancient-blue);
+            color: #fff;
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 101;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            font-family: 'Sarabun', sans-serif;
+            pointer-events: none;
+            transition: all 0.3s ease;
         }
 
         /* Chatbot Modal - Hidden by Default */
@@ -306,6 +350,63 @@
             background-size: 200% 100%; animation: thinking 1.5s linear infinite;
         }
         @keyframes thinking { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
+
+        /* Notification Toast */
+        #toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: var(--dark-blue);
+            color: #fff;
+            text-align: center;
+            border-radius: 8px;
+            padding: 16px;
+            position: fixed;
+            z-index: 2000;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            font-size: 14px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 1px solid var(--gold);
+        }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+
+        /* Reward Modal */
+        .reward-modal {
+            display: none;
+            position: fixed;
+            z-index: 3000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            justify-content: center;
+            align-items: center;
+        }
+        .reward-content {
+            background: linear-gradient(135deg, #fff, #fdfaf1);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            border: 4px solid var(--gold);
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 0 50px var(--gold);
+            animation: popIn 0.5s ease;
+        }
+        @keyframes popIn { from {transform: scale(0.5); opacity: 0;} to {transform: scale(1); opacity: 1;} }
+        .reward-code {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--ancient-blue);
+            background: #e2e8f0;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 20px 0;
+            letter-spacing: 2px;
+            border: 1px dashed var(--ancient-blue);
+        }
     </style>
 </head>
 <body>
@@ -313,7 +414,7 @@
 <div class="manuscript-container">
     <header>
         <h1>พระไตรปิฎก 45 เล่ม</h1>
-        <p style="font-size: 11px; opacity: 0.8; color: var(--ancient-blue); font-weight: 600;">ฉบับดิจิทัลคัมภีร์ครามลายทอง</p>
+        <p style="font-size: 11px; opacity: 0.8; color: var(--ancient-blue); font-weight: 600;">ฉบับดิจิทัลคัมภีร์</p>
         <div class="search-container">
             <input type="text" id="searchInput" placeholder="ค้นหาเลขเล่ม (1-45)">
         </div>
@@ -326,8 +427,29 @@
     </footer>
 </div>
 
+<!-- Check-in Count Badge -->
+<div id="checkin-badge">0</div>
+<!-- Check-in FAB -->
+<button id="fab-checkin" title="ลงชื่อรายวัน">📅</button>
+
 <!-- Chatbot FAB -->
 <button id="fab-chat-toggle" title="ถาม AI ธรรมะ">Ai</button>
+
+<!-- Toast Notification -->
+<div id="toast">ข้อความแจ้งเตือน</div>
+
+<!-- Reward Modal -->
+<div id="rewardModal" class="reward-modal">
+    <div class="reward-content">
+        <h2 style="color: var(--gold); margin-top: 0;">🎉 สาธุการ! 🎉</h2>
+        <p>ท่านได้เพียรพยายามศึกษาธรรมครบ 100 วันแล้ว</p>
+        <p>นี่คือรหัสลับสำหรับรางวัลพิเศษ:</p>
+        <div class="reward-code">no-ads-2025</div>
+        <p style="font-weight: bold; color: var(--ancient-blue);">"ลบโฆษณาถาวร"</p>
+        <p style="font-size: 12px; color: #666; margin-top:5px;">(โปรดบันทึกภาพหน้าจอนี้ไว้เพื่อยืนยัน)</p>
+        <button onclick="document.getElementById('rewardModal').style.display='none'" style="margin-top: 15px; padding: 8px 20px; background: var(--ancient-blue); color: white; border: none; border-radius: 5px; cursor: pointer;">ปิด</button>
+    </div>
+</div>
 
 <!-- Chatbot UI - Hidden initially -->
 <div id="chatbot-modal" class="chatbot-hidden">
@@ -476,8 +598,52 @@
         render(volumes.filter(v => v.n.toString().includes(q)));
     };
 
-    // แสดงผลครั้งแรก
     render(volumes);
+
+    // --- Daily Check-in Logic ---
+    const KEY_DATE = 'tipitaka_last_checkin';
+    const KEY_COUNT = 'tipitaka_checkin_count';
+    const fabCheckin = document.getElementById('fab-checkin');
+    const badge = document.getElementById('checkin-badge');
+    
+    function showToast(message) {
+        const x = document.getElementById("toast");
+        x.textContent = message;
+        x.className = "show";
+        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+    }
+
+    // Function to update the number above calendar
+    function updateBadge() {
+        const count = parseInt(localStorage.getItem(KEY_COUNT) || '0');
+        badge.innerText = count;
+    }
+
+    // Initial Badge Update
+    updateBadge();
+
+    fabCheckin.onclick = function() {
+        const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+        const lastDate = localStorage.getItem(KEY_DATE);
+        let count = parseInt(localStorage.getItem(KEY_COUNT) || '0');
+
+        if (lastDate === today) {
+            showToast("ท่านเช็คชื่อเรียบร้อย เช็คครบ 100 วัน รับ ลบโฆษณาฟรีถาวร");
+            return;
+        }
+
+        // ลงชื่อสำเร็จ
+        count++;
+        localStorage.setItem(KEY_DATE, today);
+        localStorage.setItem(KEY_COUNT, count);
+        updateBadge();
+
+        if (count === 100) {
+            document.getElementById('rewardModal').style.display = 'flex';
+        } else {
+            showToast(`✨ ลงชื่อสำเร็จ! ท่านสะสมธรรมทานครบ ${count} วันแล้ว`);
+        }
+    };
 
     // --- Chatbot Logic ---
     const BACKEND_URL = 'https://solitary-leaf-3661.tontakankeawpang321.workers.dev';
@@ -489,7 +655,6 @@
     const history = document.getElementById('chat-history');
     const thinking = document.getElementById('thinking');
 
-    // Toggle Modal visibility
     fab.onclick = () => modal.classList.toggle('chatbot-hidden');
     closeChat.onclick = () => modal.classList.add('chatbot-hidden');
 
@@ -497,7 +662,6 @@
         const text = userInput.value.trim();
         if(!text) return;
         
-        // เพิ่ม Bubble ของผู้ใช้
         const uB = document.createElement('div'); 
         uB.className='bubble bubble-user'; 
         uB.innerText=text;
@@ -515,7 +679,6 @@
             });
             const data = await res.json();
             
-            // เพิ่ม Bubble ของ AI
             const aB = document.createElement('div'); 
             aB.className='bubble bubble-ai'; 
             aB.innerText=data.reply;
