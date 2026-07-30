@@ -60,7 +60,7 @@
             border: 1px solid #cbd5e1;
         }
 
-        /* Royal Blue Book Cover Style (ปรับเปลี่ยนเป็นสีน้ำเงินครามทองทั้งเล่ม ไม่มีสีขาว) */
+        /* Royal Blue Book Cover Style */
         .blue-book-cover {
             background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 50%, #0f172a 100%) !important;
             position: relative;
@@ -123,8 +123,8 @@
 
         /* Custom Scrollbar */
         .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
+            width: 5px;
+            height: 5px;
         }
         .custom-scrollbar::-webkit-scrollbar-track {
             background: rgba(15, 23, 42, 0.05);
@@ -133,12 +133,26 @@
             background: #cbd5e1;
             border-radius: 10px;
         }
+
+        /* Video Responsive Container */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
-<body class="py-2 sm:py-6 px-1.5 sm:px-4 antialiased selection:bg-amber-200 selection:text-amber-950">
+<body class="py-2 sm:py-6 px-1.5 sm:px-4 antialiased selection:bg-amber-200 selection:text-amber-950 pb-24 sm:pb-28">
 
-<!-- Main Container -->
-<div class="manuscript-wrapper max-w-5xl mx-auto rounded-xl overflow-hidden relative min-h-[96vh] flex flex-col justify-between">
+<div class="manuscript-wrapper max-w-5xl mx-auto rounded-xl overflow-hidden relative min-h-[90vh] flex flex-col justify-between">
 
     <div>
         <!-- COMPACT HEADER BANNER -->
@@ -162,7 +176,7 @@
                 สืบสานพระพุทธศาสนา • รวมคำสอนพระพุทธองค์สมบูรณ์ทั้งพระวินัย พระสูตร และพระอภิธรรม
             </p>
 
-            <!-- Compact Pill Counters (เล็ก กระชับ ไม่เด่น) -->
+            <!-- Compact Pill Counters -->
             <div class="flex flex-wrap justify-center gap-1.5 sm:gap-2 mt-3 text-[10px] sm:text-[11px] font-sarabun">
                 <span class="bg-amber-950/40 text-amber-200/90 border border-amber-500/30 px-2.5 py-0.5 rounded-full flex items-center">
                     <span class="w-1.5 h-1.5 rounded-full bg-amber-400 mr-1"></span>พระวินัยปิฎก (เล่ม ๑-๘)
@@ -176,7 +190,6 @@
             </div>
         </header>
 
-        <!-- SEARCH & FILTER TOOLBAR -->
         <section class="p-2.5 sm:p-4 bg-stone-100/90 border-b border-stone-200/80 sticky top-0 z-30 backdrop-blur-md shadow-sm">
             <div class="max-w-3xl mx-auto space-y-2">
                 
@@ -216,7 +229,6 @@
             </div>
         </section>
 
-        <!-- VOLUMES GRID CONTAINER (2 Columns on mobile as specified) -->
         <main class="p-2 sm:p-5 md:p-6">
             <div id="grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4">
                 <!-- Dynamic Content Injected via JavaScript -->
@@ -243,8 +255,29 @@
     </footer>
 </div>
 
-<!-- ================= FLOATING ACTION BUTTONS (FAB) ================= -->
-<div class="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2.5 pointer-events-none">
+<nav class="fixed bottom-3 left-1/2 -translate-x-1/2 z-40 bg-slate-950/90 border border-amber-500/40 backdrop-blur-md rounded-full p-1.5 shadow-2xl flex items-center gap-1 font-sarabun text-xs text-slate-200">
+    <button id="view-mode-book" 
+        class="px-3.5 py-1.5 rounded-full flex items-center gap-1.5 bg-amber-500 text-slate-950 font-semibold shadow transition-all">
+        <span>📖</span>
+        <span class="text-[11px] sm:text-xs">หนังสือ</span>
+    </button>
+
+    <button id="btn-open-audio" onclick="openAudioModal()" 
+        class="px-3.5 py-1.5 rounded-full flex items-center gap-1.5 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-medium shadow transition-all">
+        <span>🎧</span>
+        <span class="text-[11px] sm:text-xs font-semibold">เสียงอ่าน</span>
+    </button>
+
+    <div class="h-4 w-px bg-slate-700 mx-0.5"></div>
+
+    <button id="btn-open-podcast" onclick="openPodcastModal()" 
+        class="px-3.5 py-1.5 rounded-full flex items-center gap-1.5 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white font-medium shadow transition-all">
+        <span class="animate-pulse">🎙️</span>
+        <span class="text-[11px] sm:text-xs font-semibold">วิดีโอสรุป</span>
+    </button>
+</nav>
+
+<div class="fixed bottom-16 right-3 sm:right-5 z-40 flex flex-col items-end gap-2.5 pointer-events-none">
     
     <!-- Daily Check-in FAB -->
     <div class="pointer-events-auto relative group">
@@ -267,15 +300,131 @@
 
 </div>
 
-<!-- ================= MODALS & TOAST NOTIFICATIONS ================= -->
+<div id="audioPlayerModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 font-sarabun">
+    <div class="bg-slate-900 border-2 border-amber-500/60 rounded-2xl max-w-xl w-full max-h-[92vh] flex flex-col overflow-hidden shadow-2xl text-slate-100">
+        
+        <div class="px-4 py-3 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 border-b border-amber-500/30 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-emerald-400 text-lg">🎧</span>
+                <div>
+                    <h2 class="font-maitree text-sm sm:text-base font-bold text-amber-300 leading-tight">
+                        เสียงอ่านพระไตรปิฎก & คลังลิงก์เสียง
+                    </h2>
+                    <p class="text-[10px] sm:text-xs text-slate-300 opacity-80">
+                        รับฟังเสียงธรรมะ และบันทึก URL ลิงก์เสียงอ่านส่วนตัว
+                    </p>
+                </div>
+            </div>
+            
+            <button onclick="closeAudioModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-sm font-bold transition-colors">
+                ✕
+            </button>
+        </div>
 
-<!-- Toast Notification -->
+        <div class="p-3 sm:p-4 overflow-y-auto custom-scrollbar flex-1 space-y-3">
+            <div class="bg-slate-800/90 p-3.5 rounded-xl border border-slate-700 shadow-md">
+                <div class="flex items-center justify-between mb-2">
+                    <span id="currentAudioTitle" class="text-xs sm:text-sm font-semibold text-amber-200 truncate pr-2">
+                        กดเลือกบทธรรมด้านล่างเพื่อเริ่มฟัง...
+                    </span>
+                    <span class="text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded-full flex-shrink-0">
+                        Audio Player
+                    </span>
+                </div>
+                <audio id="mainAudioPlayer" controls class="w-full h-10 rounded-lg border border-slate-600 bg-slate-950">
+                    เบราว์เซอร์ของท่านไม่รองรับการเล่นไฟล์เสียง
+                </audio>
+            </div>
+
+            <div>
+                <h4 class="text-xs font-semibold text-slate-300 mb-2 flex items-center justify-between">
+                    <span class="flex items-center gap-1">📜 คลังรายการเสียงอ่าน:</span>
+                    <span id="audio-count-badge" class="text-[10px] text-amber-400 font-normal">0 รายการ</span>
+                </h4>
+
+                <div id="audioPlaylist" class="space-y-1.5 max-h-60 overflow-y-auto custom-scrollbar pr-1">
+                    <!-- Dynamic List Items Injected via JS -->
+                </div>
+            </div>
+        </div>
+
+        <div class="px-4 py-2.5 bg-slate-950 border-t border-slate-800 flex justify-between items-center text-xs">
+            <span class="text-[10px] text-slate-400">รองรับไฟล์เสียง MP3 และลิงก์สตรีมเสียงออนไลน์</span>
+            <button onclick="closeAudioModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 font-medium rounded-lg transition-colors">
+                ปิดหน้าต่าง
+            </button>
+        </div>
+    </div>
+</div>
+
+<div id="videoPodcastModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4">
+    <div class="bg-slate-900 border-2 border-amber-500/60 rounded-2xl max-w-2xl w-full max-h-[92vh] flex flex-col overflow-hidden shadow-2xl font-sarabun text-slate-100">
+        
+        <div class="px-4 py-3 bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 border-b border-amber-500/30 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-red-500 text-lg">🎬</span>
+                <div>
+                    <h2 class="font-maitree text-sm sm:text-base font-bold text-amber-300 leading-tight">
+                        วิดีโอสรุปเนื้อหา & พอดแคสต์ธรรมะ
+                    </h2>
+                    <p class="text-[10px] sm:text-xs text-slate-300 opacity-80">
+                        ฟังธรรมบรรยายและภาพรวมพระไตรปิฎก ๔๕ เล่ม
+                    </p>
+                </div>
+            </div>
+            
+            <button onclick="closePodcastModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-sm font-bold transition-colors">
+                ✕
+            </button>
+        </div>
+
+        <div class="p-2 sm:p-4 overflow-y-auto custom-scrollbar flex-1 space-y-3">
+            <div class="bg-black rounded-xl overflow-hidden shadow-lg border border-slate-800">
+                <div class="video-container">
+                    <iframe id="podcastPlayer" 
+                        src="" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+
+            <div class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/60">
+                <h3 id="currentVideoTitle" class="font-maitree font-semibold text-xs sm:text-sm text-amber-200">
+                    กำลังโหลดวิดีโอสรุปธรรมะ...
+                </h3>
+                <p id="currentVideoDesc" class="text-[11px] text-slate-400 mt-0.5 leading-relaxed font-light">
+                    เลือกตอนที่ต้องการรับฟังจากรายการพอดแคสต์ด้านล่าง
+                </p>
+            </div>
+
+            <div>
+                <h4 class="text-xs font-semibold text-slate-300 mb-2 flex items-center gap-1">
+                    <span>🎧</span> เลือกรับฟังพอดแคสต์สรุปบทธรรม:
+                </h4>
+
+                <div id="podcastPlaylist" class="space-y-1.5 max-h-48 sm:max-h-56 overflow-y-auto custom-scrollbar pr-1">
+                    <!-- Playlist dynamic elements populated via JS -->
+                </div>
+            </div>
+        </div>
+
+        <div class="px-4 py-2.5 bg-slate-950 border-t border-slate-800 flex justify-between items-center text-xs">
+            <span class="text-[10px] text-slate-400">รองรับการแสดงผลทั้งแนวตั้งและแนวนอน</span>
+            <button onclick="closePodcastModal()" class="px-4 py-1.5 bg-slate-800 hover:bg-slate-700 text-amber-300 font-medium rounded-lg transition-colors">
+                ปิดหน้าต่าง
+            </button>
+        </div>
+    </div>
+</div>
+
 <div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 invisible opacity-0 bg-slate-950/95 text-amber-300 text-xs px-4 py-2.5 rounded-xl border border-amber-500/40 shadow-xl backdrop-blur-md transition-all duration-300 flex items-center gap-1.5 pointer-events-none font-sarabun">
     <span id="toast-icon">✨</span>
     <span id="toast-msg">ข้อความแจ้งเตือน</span>
 </div>
 
-<!-- Reward Modal (100 Days Streak Special) -->
 <div id="rewardModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-white border-2 border-amber-400 rounded-xl p-5 max-w-sm w-full text-center shadow-2xl relative font-sarabun">
         <div class="text-4xl mb-1">🎉</div>
@@ -296,10 +445,7 @@
     </div>
 </div>
 
-<!-- AI Chatbot Modal Dialog -->
-<div id="chatbot-modal" class="hidden fixed bottom-16 right-2 sm:right-5 z-50 w-[320px] sm:w-[360px] max-w-[calc(100vw-1rem)] h-[440px] bg-white rounded-xl border-2 border-slate-900 shadow-2xl flex flex-col overflow-hidden font-sarabun transition-all">
-    
-    <!-- Chat Header -->
+<div id="chatbot-modal" class="hidden fixed bottom-20 right-2 sm:right-5 z-50 w-[320px] sm:w-[360px] max-w-[calc(100vw-1rem)] h-[440px] bg-white rounded-xl border-2 border-slate-900 shadow-2xl flex flex-col overflow-hidden font-sarabun transition-all">
     <div class="bg-gradient-to-r from-slate-950 to-indigo-950 text-white px-3 py-2.5 flex items-center justify-between border-b border-amber-500/30">
         <div class="flex items-center gap-2">
             <span class="text-amber-300 text-sm">☸</span>
@@ -313,7 +459,6 @@
         </button>
     </div>
 
-    <!-- Quick Prompt Chips -->
     <div class="bg-stone-100 px-2 py-1.5 border-b border-stone-200 flex gap-1 overflow-x-auto text-[10px] whitespace-nowrap custom-scrollbar">
         <button onclick="quickPrompt('สรุปอริยสัจ 4 โดยย่อ')" class="px-2 py-0.5 bg-white border border-stone-300 rounded-full text-stone-700 hover:bg-amber-50">
             💡 อริยสัจ ๔
@@ -326,7 +471,6 @@
         </button>
     </div>
 
-    <!-- Chat History Window -->
     <div id="chat-history" class="flex-1 p-2.5 overflow-y-auto bg-stone-50 space-y-2.5 custom-scrollbar text-xs">
         <div class="flex items-start gap-1.5">
             <div class="w-5 h-5 rounded-full bg-slate-900 text-amber-300 flex items-center justify-center text-[9px] flex-shrink-0 mt-0.5">☸</div>
@@ -336,13 +480,11 @@
         </div>
     </div>
 
-    <!-- Thinking Indicator -->
     <div id="thinking" class="hidden px-3 py-1 bg-amber-50 text-[10px] text-amber-900 flex items-center gap-1.5 border-t border-amber-100">
         <span class="w-1.5 h-1.5 rounded-full bg-amber-600 animate-ping"></span>
         <span>กำลังค้นหาคัมภีร์วิสัชนา...</span>
     </div>
 
-    <!-- Input Area -->
     <div class="p-2 bg-white border-t border-stone-200 flex gap-1.5 items-center">
         <input type="text" id="user-input" 
             placeholder="พิมพ์ปัญหาธรรมที่นี่..." 
@@ -356,7 +498,6 @@
 
 <!-- ================= JAVASCRIPT LOGIC ================= -->
 <script>
-    // 45 Volume Links
     const links = [
         "tri1/index.html", "tri2/index.html", "tri3/index.html", "tri4/index.html", "tri5/index.html",
         "tri6/index.html", "tri7/index.html", "tri8/index.html", "tri9/index.html", "tri10/index.html",
@@ -377,7 +518,6 @@
         "https://tontakankeawpang321-glitch.github.io/pritrupidok37.io/tri45/index.html",
     ];
 
-    // Descriptions
     const descriptions = [
         "มหาวิภังค์ ภาค 1 - ปาราชิก สังฆาทิเสส",
         "มหาวิภังค์ ภาค 2 - นิสสัคคิยปาจิตตีย์",
@@ -426,13 +566,39 @@
         "ปัฏฐานปกรณ์ ภาค 5",
     ];
 
-    // Convert numbers to Thai numerals
+    const podcastList = [
+        {
+            ytId: "S-J3fJbE-Yk",
+            title: "สรุปพระไตรปิฎก ๔๕ เล่ม ครบถ้วนเข้าใจง่าย",
+            desc: "บรรยายภาพรวมโครงสร้างพระธรรมวินัย พระวินัย พระสูตร และพระอภิธรรม"
+        },
+        {
+            ytId: "g4YpIeS2RVs",
+            title: "พอดแคสต์ฟังธรรมก่อนนอน - อริยสัจ ๔ และมรรคมีองค์ ๘",
+            desc: "หลักธรรมเพื่อการดับทุกข์และสร้างความสงบใจในชีวิตประจำวัน"
+        },
+        {
+            ytId: "9Sgl34W4GqI",
+            title: "สรุปสาระสำคัญ พระวินัยปิฎก (เล่ม ๑ - ๘)",
+            desc: "ศึกษาโครงสร้างศีล ๒๒๗ ข้อ และสิกขาบทของพระภิกษุและภิกษุณี"
+        },
+        {
+            ytId: "Qp4uW2l2mP0",
+            title: "สรุปสาระสำคัญ พระสุตตันตปิฎก (เล่ม ๙ - ๓๓)",
+            desc: "บทสรุปพระสูตรสำคัญ ชาดก คาถาธรรมบท และชาดกสอนใจ"
+        },
+        {
+            ytId: "7O0P3sXn7Xw",
+            title: "สรุปสาระสำคัญ พระอภิธรรมปิฎก (เล่ม ๓๔ - ๔๕)",
+            desc: "คำสอนว่าด้วยปรมัตถธรรม จิต เจตสิก รูป นิพพาน"
+        }
+    ];
+
     function toThaiDigits(num) {
         const thaiNums = ['๐','๑','๒','๓','๔','๕','๖','๗','๘','๙'];
         return num.toString().split('').map(d => thaiNums[parseInt(d)] || d).join('');
     }
 
-    // Construct Volumes Object List
     const volumes = Array.from({length: 45}, (_, i) => {
         const num = i + 1;
         let catKey = 'vinaya';
@@ -469,13 +635,30 @@
     let searchQuery = '';
     let bookmarks = JSON.parse(localStorage.getItem(KEY_BOOKMARKS) || '[]');
 
+    // รายการเสียงอ่านพระไตรปิฎก (สามารถเพิ่ม/แก้ไข/ลบ ลิงก์ในโค้ดตรงนี้ได้ตามต้องการ)
+    const audioList = [
+        {
+            title: "เสียงอ่านพระไตรปิฎก เล่มที่ ๑ มหาวิภังค์",
+            url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+        },
+        {
+            title: "บทสวดมนต์ทำวัตรเช้า-เย็น และพระสูตรสำคัญ",
+            url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"
+        },
+        {
+            title: "เสียงอ่าน อริยสัจ ๔ และมรรคมีองค์ ๘",
+            url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"
+        }
+    ];
+
     const grid = document.getElementById('grid');
     const searchInput = document.getElementById('searchInput');
     const clearSearchBtn = document.getElementById('clearSearch');
     const noResults = document.getElementById('noResults');
 
     function updateBookmarkCount() {
-        document.getElementById('bookmark-count').textContent = bookmarks.length;
+        const countEl = document.getElementById('bookmark-count');
+        if (countEl) countEl.textContent = bookmarks.length;
     }
 
     function toggleBookmark(e, volNum) {
@@ -495,8 +678,8 @@
         render();
     }
 
-    // Render Grid Cards
     function render() {
+        if (!grid) return;
         grid.innerHTML = '';
         
         const filtered = volumes.filter(v => {
@@ -520,19 +703,17 @@
         });
 
         if (filtered.length === 0) {
-            noResults.classList.remove('hidden');
+            if (noResults) noResults.classList.remove('hidden');
         } else {
-            noResults.classList.add('hidden');
+            if (noResults) noResults.classList.add('hidden');
             
             filtered.forEach(v => {
                 const isBookmarked = bookmarks.includes(v.n);
                 const item = document.createElement('div');
                 item.className = 'royal-card group cursor-pointer';
-                
                 item.innerHTML = `
                     <div class="bg-white rounded-lg border border-stone-200 hover:border-amber-400 p-2 sm:p-2.5 transition-all duration-200 hover:shadow-md flex flex-col justify-between h-full relative overflow-hidden">
                         
-                        <!-- Bookmark Star Button -->
                         <button onclick="toggleBookmark(event, ${v.n})" 
                             title="${isBookmarked ? 'ยกเลิกคั่นหน้า' : 'คั่นเล่มนี้'}"
                             class="absolute top-1.5 right-1.5 z-20 w-6 h-6 rounded-full bg-white/90 hover:bg-white border border-stone-200 flex items-center justify-center text-[11px] shadow-sm transition-transform active:scale-90">
@@ -540,24 +721,17 @@
                         </button>
 
                         <a href="${v.link}" target="_blank" class="block space-y-1.5">
-                            
-                            <!-- Royal Blue Cover (สีน้ำเงินครามทอง) -->
                             <div class="py-1 flex justify-center">
                                 <div class="blue-book-cover thai-pattern-overlay w-16 h-24 sm:w-20 sm:h-28 flex flex-col items-center justify-center text-amber-300 relative select-none">
-                                    
                                     <div class="gold-ribbon"></div>
                                     <div class="blue-book-frame"></div>
-                                    
-                                    <!-- Dhammachakka Emblem Symbol ☸ -->
                                     <span class="text-xs sm:text-sm text-amber-400 mb-0.5">☸</span>
-
                                     <span class="text-[8px] font-maitree tracking-widest text-amber-200/80 uppercase">เล่มที่</span>
                                     <span class="font-charm font-bold text-lg sm:text-xl text-amber-200 drop-shadow-sm leading-tight">${v.thaiN}</span>
                                     <span class="text-[8px] font-sarabun text-amber-300/70">(${v.n})</span>
                                 </div>
                             </div>
 
-                            <!-- Title & Desc -->
                             <div class="text-center pt-0.5 font-sarabun">
                                 <span class="inline-block px-1.5 py-0.2 rounded text-[9px] font-medium border ${v.tagBg} mb-0.5">
                                     ${v.catLabel}
@@ -577,25 +751,88 @@
         }
     }
 
-    // Search Handlers
-    searchInput.oninput = (e) => {
-        searchQuery = e.target.value.trim();
-        clearSearchBtn.classList.toggle('hidden', searchQuery === '');
-        render();
-    };
+    function openAudioModal() {
+        const modal = document.getElementById('audioPlayerModal');
+        if (modal) modal.classList.remove('hidden');
+        renderAudioPlaylist();
+    }
 
-    clearSearchBtn.onclick = () => {
-        searchInput.value = '';
-        searchQuery = '';
-        clearSearchBtn.classList.add('hidden');
-        render();
-    };
+    function closeAudioModal() {
+        const modal = document.getElementById('audioPlayerModal');
+        const player = document.getElementById('mainAudioPlayer');
+        if (player) player.pause();
+        if (modal) modal.classList.add('hidden');
+    }
+
+    function playAudioTrack(url, title) {
+        const player = document.getElementById('mainAudioPlayer');
+        const titleEl = document.getElementById('currentAudioTitle');
+        
+        if (player) {
+            player.src = url;
+            if (titleEl) titleEl.textContent = title;
+            player.play().catch(() => showToast('โปรดตรวจสอบความถูกต้องของ URL ไฟล์เสียง', '⚠️'));
+        }
+    }
+
+    function renderAudioPlaylist() {
+        const container = document.getElementById('audioPlaylist');
+        const badge = document.getElementById('audio-count-badge');
+        if (!container) return;
+        
+        if (badge) badge.textContent = `${audioList.length} รายการ`;
+        container.innerHTML = '';
+
+        if (audioList.length === 0) {
+            container.innerHTML = `<p class="text-xs text-slate-500 text-center py-4">ยังไม่มีรายการเสียงในระบบ</p>`;
+            return;
+        }
+
+        audioList.forEach((item) => {
+            const div = document.createElement('div');
+            div.className = "w-full p-2 rounded-lg bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 flex items-center justify-between gap-2 transition-all group";
+            
+            div.innerHTML = `
+                <button onclick="playAudioTrack('${item.url}', '${escapeHTML(item.title)}')" class="flex items-center gap-2.5 min-w-0 flex-1 text-left">
+                    <div class="w-7 h-7 rounded-full bg-emerald-600/20 text-emerald-400 group-hover:bg-emerald-600 group-hover:text-white flex items-center justify-center text-xs flex-shrink-0 transition-colors">
+                        ▶
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <h5 class="text-xs font-medium text-slate-200 group-hover:text-amber-300 truncate">
+                            ${item.title}
+                        </h5>
+                        <span class="text-[9px] text-slate-400 truncate block opacity-70">
+                            เสียงอ่านคัมภีร์
+                        </span>
+                    </div>
+                </button>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    if (searchInput) {
+        searchInput.oninput = (e) => {
+            searchQuery = e.target.value.trim();
+            if (clearSearchBtn) clearSearchBtn.classList.toggle('hidden', searchQuery === '');
+            render();
+        };
+    }
+
+    if (clearSearchBtn) {
+        clearSearchBtn.onclick = () => {
+            if (searchInput) searchInput.value = '';
+            searchQuery = '';
+            clearSearchBtn.classList.add('hidden');
+            render();
+        };
+    }
 
     function resetSearch() {
-        searchInput.value = '';
+        if (searchInput) searchInput.value = '';
         searchQuery = '';
         currentFilter = 'all';
-        clearSearchBtn.classList.add('hidden');
+        if (clearSearchBtn) clearSearchBtn.classList.add('hidden');
         document.querySelectorAll('.filter-btn').forEach(btn => {
             btn.classList.remove('bg-slate-900', 'text-amber-300');
             btn.classList.add('bg-white', 'text-stone-700');
@@ -603,7 +840,6 @@
         render();
     }
 
-    // Filter Buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
         btn.onclick = () => {
             document.querySelectorAll('.filter-btn').forEach(b => {
@@ -621,8 +857,12 @@
 
     function showToast(msg, icon = '✨') {
         const toast = document.getElementById('toast');
-        document.getElementById('toast-msg').textContent = msg;
-        document.getElementById('toast-icon').textContent = icon;
+        const toastMsg = document.getElementById('toast-msg');
+        const toastIcon = document.getElementById('toast-icon');
+
+        if (!toast) return;
+        if (toastMsg) toastMsg.textContent = msg;
+        if (toastIcon) toastIcon.textContent = icon;
 
         toast.classList.remove('invisible', 'opacity-0');
         toast.classList.add('opacity-100');
@@ -633,42 +873,95 @@
         }, 2800);
     }
 
-    // Daily Check-in Logic
+    function openPodcastModal(ytId = null) {
+        const modal = document.getElementById('videoPodcastModal');
+        if (modal) modal.classList.remove('hidden');
+        renderPodcastPlaylist();
+
+        const selected = podcastList.find(p => p.ytId === ytId) || podcastList[0];
+        playPodcastVideo(selected.ytId, selected.title, selected.desc);
+    }
+
+    function closePodcastModal() {
+        const modal = document.getElementById('videoPodcastModal');
+        const iframe = document.getElementById('podcastPlayer');
+        if (iframe) iframe.src = "";
+        if (modal) modal.classList.add('hidden');
+    }
+
+    function playPodcastVideo(ytId, title, desc) {
+        const iframe = document.getElementById('podcastPlayer');
+        const titleEl = document.getElementById('currentVideoTitle');
+        const descEl = document.getElementById('currentVideoDesc');
+
+        if (iframe) iframe.src = `https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0`;
+        if (titleEl) titleEl.innerText = title;
+        if (descEl) descEl.innerText = desc;
+    }
+
+    function renderPodcastPlaylist() {
+        const playlistContainer = document.getElementById('podcastPlaylist');
+        if (!playlistContainer) return;
+        playlistContainer.innerHTML = '';
+
+        podcastList.forEach((item, index) => {
+            const btn = document.createElement('button');
+            btn.className = "w-full text-left p-2 rounded-lg bg-slate-800/60 hover:bg-slate-800 border border-slate-700/50 flex items-center gap-2.5 transition-all group";
+            btn.onclick = () => playPodcastVideo(item.ytId, item.title, item.desc);
+            
+            btn.innerHTML = `
+                <div class="w-7 h-7 rounded-full bg-red-600/20 text-red-400 group-hover:bg-red-600 group-hover:text-white flex items-center justify-center text-xs flex-shrink-0 transition-colors">
+                    ▶
+                </div>
+                <div class="min-w-0 flex-1">
+                    <h5 class="text-xs font-medium text-slate-200 group-hover:text-amber-300 truncate">
+                        ${index + 1}. ${item.title}
+                    </h5>
+                    <p class="text-[10px] text-slate-400 truncate font-light">${item.desc}</p>
+                </div>
+            `;
+            playlistContainer.appendChild(btn);
+        });
+    }
+
     const fabCheckin = document.getElementById('fab-checkin');
     const checkinBadge = document.getElementById('checkin-badge');
 
     function updateCheckinBadge() {
         const count = parseInt(localStorage.getItem(KEY_COUNT) || '0');
-        checkinBadge.innerText = count;
+        if (checkinBadge) checkinBadge.innerText = count;
     }
 
-    fabCheckin.onclick = function() {
-        const today = new Date().toISOString().split('T')[0];
-        const lastDate = localStorage.getItem(KEY_DATE);
-        let count = parseInt(localStorage.getItem(KEY_COUNT) || '0');
+    if (fabCheckin) {
+        fabCheckin.onclick = function() {
+            const today = new Date().toISOString().split('T')[0];
+            const lastDate = localStorage.getItem(KEY_DATE);
+            let count = parseInt(localStorage.getItem(KEY_COUNT) || '0');
 
-        if (lastDate === today) {
-            showToast(`วันนี้ลงชื่อสะสมธรรมแล้ว (${count} วัน)`, '📅');
-            return;
-        }
+            if (lastDate === today) {
+                showToast(`วันนี้ลงชื่อสะสมธรรมแล้ว (${count} วัน)`, '📅');
+                return;
+            }
 
-        count++;
-        localStorage.setItem(KEY_DATE, today);
-        localStorage.setItem(KEY_COUNT, count);
-        updateCheckinBadge();
+            count++;
+            localStorage.setItem(KEY_DATE, today);
+            localStorage.setItem(KEY_COUNT, count);
+            updateCheckinBadge();
 
-        if (count >= 100) {
-            document.getElementById('rewardModal').classList.remove('hidden');
-        } else {
-            showToast(`✨ อนุโมทนา! ลงชื่อสำเร็จ สะสมครบ ${count} วันแล้ว`, '🎉');
-        }
-    };
+            if (count >= 100) {
+                const rewardModal = document.getElementById('rewardModal');
+                if (rewardModal) rewardModal.classList.remove('hidden');
+            } else {
+                showToast(`✨ อนุโมทนา! ลงชื่อสำเร็จ สะสมครบ ${count} วันแล้ว`, '🎉');
+            }
+        };
+    }
 
     function closeRewardModal() {
-        document.getElementById('rewardModal').classList.add('hidden');
+        const rewardModal = document.getElementById('rewardModal');
+        if (rewardModal) rewardModal.classList.add('hidden');
     }
 
-    // AI Chatbot Backend Integration
     const BACKEND_URL = 'https://solitary-leaf-3661.tontakankeawpang321.workers.dev';
     const fabChat = document.getElementById('fab-chat-toggle');
     const chatModal = document.getElementById('chatbot-modal');
@@ -678,26 +971,37 @@
     const chatHistory = document.getElementById('chat-history');
     const thinking = document.getElementById('thinking');
 
-    fabChat.onclick = () => chatModal.classList.toggle('hidden');
-    closeChat.onclick = () => chatModal.classList.add('hidden');
+    if (fabChat) {
+        fabChat.onclick = () => {
+            if (chatModal) chatModal.classList.toggle('hidden');
+        };
+    }
+
+    if (closeChat) {
+        closeChat.onclick = () => {
+            if (chatModal) chatModal.classList.add('hidden');
+        };
+    }
 
     async function handleSend(customText = null) {
+        if (!userInput && !customText) return;
         const text = customText || userInput.value.trim();
         if (!text) return;
 
-        // User Message Bubble
-        const uBubble = document.createElement('div');
-        uBubble.className = 'flex justify-end';
-        uBubble.innerHTML = `
-            <div class="bg-slate-900 text-amber-200 p-2 rounded-xl rounded-tr-none max-w-[88%] leading-relaxed shadow-sm">
-                ${escapeHTML(text)}
-            </div>
-        `;
-        chatHistory.appendChild(uBubble);
-        if(!customText) userInput.value = '';
-        chatHistory.scrollTop = chatHistory.scrollHeight;
+        if (chatHistory) {
+            const uBubble = document.createElement('div');
+            uBubble.className = 'flex justify-end';
+            uBubble.innerHTML = `
+                <div class="bg-slate-900 text-amber-200 p-2 rounded-xl rounded-tr-none max-w-[88%] leading-relaxed shadow-sm">
+                    ${escapeHTML(text)}
+                </div>
+            `;
+            chatHistory.appendChild(uBubble);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
 
-        thinking.classList.remove('hidden');
+        if (!customText && userInput) userInput.value = '';
+        if (thinking) thinking.classList.remove('hidden');
 
         try {
             const res = await fetch(BACKEND_URL, {
@@ -707,29 +1011,32 @@
             });
             const data = await res.json();
 
-            // AI Response Bubble
-            const aBubble = document.createElement('div');
-            aBubble.className = 'flex items-start gap-1.5';
-            aBubble.innerHTML = `
-                <div class="w-5 h-5 rounded-full bg-slate-900 text-amber-300 flex items-center justify-center text-[9px] flex-shrink-0 mt-0.5">☸</div>
-                <div class="bg-white border border-stone-200 text-stone-800 p-2 rounded-xl rounded-tl-none shadow-sm max-w-[88%] leading-relaxed">
-                    ${escapeHTML(data.reply || 'ขออภัย ไม่สามารถดึงคำตอบได้ในขณะนี้')}
-                </div>
-            `;
-            chatHistory.appendChild(aBubble);
+            if (chatHistory) {
+                const aBubble = document.createElement('div');
+                aBubble.className = 'flex items-start gap-1.5';
+                aBubble.innerHTML = `
+                    <div class="w-5 h-5 rounded-full bg-slate-900 text-amber-300 flex items-center justify-center text-[9px] flex-shrink-0 mt-0.5">☸</div>
+                    <div class="bg-white border border-stone-200 text-stone-800 p-2 rounded-xl rounded-tl-none shadow-sm max-w-[88%] leading-relaxed">
+                        ${escapeHTML(data.reply || 'ขออภัย ไม่สามารถดึงคำตอบได้ในขณะนี้')}
+                    </div>
+                `;
+                chatHistory.appendChild(aBubble);
+            }
         } catch (e) {
-            const eBubble = document.createElement('div');
-            eBubble.className = 'flex items-start gap-1.5';
-            eBubble.innerHTML = `
-                <div class="w-5 h-5 rounded-full bg-red-900 text-white flex items-center justify-center text-[9px] flex-shrink-0 mt-0.5">⚠️</div>
-                <div class="bg-red-50 border border-red-200 text-red-800 p-2 rounded-xl rounded-tl-none max-w-[88%] leading-relaxed">
-                    ขออภัย เจริญพร เกิดข้อผิดพลาดในการเชื่อมต่อเครือข่าย
-                </div>
-            `;
-            chatHistory.appendChild(eBubble);
+            if (chatHistory) {
+                const eBubble = document.createElement('div');
+                eBubble.className = 'flex items-start gap-1.5';
+                eBubble.innerHTML = `
+                    <div class="w-5 h-5 rounded-full bg-red-900 text-white flex items-center justify-center text-[9px] flex-shrink-0 mt-0.5">⚠️</div>
+                    <div class="bg-red-50 border border-red-200 text-red-800 p-2 rounded-xl rounded-tl-none max-w-[88%] leading-relaxed">
+                        ขออภัย เกิดข้อผิดพลาดในการเชื่อมต่อเครือข่าย
+                    </div>
+                `;
+                chatHistory.appendChild(eBubble);
+            }
         } finally {
-            thinking.classList.add('hidden');
-            chatHistory.scrollTop = chatHistory.scrollHeight;
+            if (thinking) thinking.classList.add('hidden');
+            if (chatHistory) chatHistory.scrollTop = chatHistory.scrollHeight;
         }
     }
 
@@ -749,8 +1056,8 @@
         );
     }
 
-    sendBtn.onclick = () => handleSend();
-    userInput.onkeydown = (e) => e.key === 'Enter' && handleSend();
+    if (sendBtn) sendBtn.onclick = () => handleSend();
+    if (userInput) userInput.onkeydown = (e) => e.key === 'Enter' && handleSend();
 
     // Initial Execution
     updateBookmarkCount();
