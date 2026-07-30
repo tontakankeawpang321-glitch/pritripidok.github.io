@@ -5324,13 +5324,14 @@ function updateCounters() {
 function toggleTOC(){ document.getElementById("toc").classList.toggle("show"); }
 function fontSize(change){
   currentZoom += (change * 0.1); 
-  if(currentZoom < 0.5) currentZoom = 0.5; if(currentZoom > 5.0) currentZoom = 5.0; 
+  if(currentZoom < 0.5) currentZoom = 0.5; 
+  if(currentZoom > 3.0) currentZoom = 3.0; 
   
-  const widthPercent = Math.round(currentZoom * 100);
   document.querySelectorAll(".slide-content").forEach(el => { 
-    el.style.zoom = ""; el.style.transform = ""; 
-    el.style.width = widthPercent + "%";
-    el.style.fontSize = (18 * currentZoom) + "px";
+    el.style.width = "90%";
+    el.style.transformOrigin = "center center";
+    el.style.transform = `scale(${currentZoom})`;
+    el.style.transition = "transform 0.2s ease";
   });
 }
 function changeTheme(themeName) { document.body.className = themeName; }
