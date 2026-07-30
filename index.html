@@ -1,512 +1,371 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="th" class="scroll-smooth">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>พระไตรปิฎก 45 เล่ม (ฉบับคัมภีร์สีฟ้าลายไทย)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Maitree:wght@400;600;700&family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>พระไตรปิฎก ๔๕ เล่ม (ฉบับดิจิทัลคัมภีร์รัตนบรมธรรม)</title>
+
+    <!-- Google Fonts: Charm for royal touch, Maitree for headers, Sarabun for body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Charm:wght@400;700&family=Maitree:wght@400;500;600;700&family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'royal-dark': '#0a101d',
+                        'royal-navy': '#111e38',
+                        'royal-blue': '#1a2e5a',
+                        'royal-light': '#243b73',
+                        'gold-light': '#fef08a',
+                        'gold-mid': '#d4af37',
+                        'gold-deep': '#a17a18',
+                    },
+                    fontFamily: {
+                        charm: ['Charm', 'cursive', 'serif'],
+                        maitree: ['Maitree', 'serif'],
+                        sarabun: ['Sarabun', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
 
     <style>
         :root {
-            /* Palette: Ancient Blue & Gold */
-            --paper: #fdfaf1; 
-            --ink: #1e293b; 
-            --ancient-blue: #1e3a8a; /* สีฟ้าครามโบราณ */
-            --dark-blue: #172554;
-            --gold: #d4af37;
-            --gold-bright: #fde047;
-            --border-color: #cbd5e1;
-            
-            --shadow: 0 4px 10px rgba(0,0,0,0.1);
-            --radius: 4px; 
+            --bg-body: #d1d5db;
+            --paper-bg: #fcfbf7;
+            --navy-deep: #0e1a34;
+            --navy-bright: #1b2f5b;
+            --gold-accent: #d4af37;
         }
 
         body {
-            margin: 0;
-            padding: 0;
             font-family: 'Sarabun', sans-serif;
-            background-color: #cbd5e1; 
+            background-color: var(--bg-body);
             background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
-            color: var(--ink);
+            color: #1e293b;
+            min-height: 100vh;
         }
 
-        .manuscript-container {
-            max-width: 1100px;
-            margin: 10px auto;
-            background: var(--paper);
-            padding: 15px;
-            box-shadow: 0 0 40px rgba(0,0,0,0.2);
-            border: 1px solid var(--border-color);
-            position: relative;
-            min-height: 98vh;
-        }
-
-        @media(min-width: 768px) {
-            .manuscript-container {
-                margin: 40px auto;
-                padding: 40px;
-            }
-        }
-
-        .manuscript-container::before {
-            content: "☸";
-            position: absolute;
-            top: 10px; left: 10px;
-            font-size: 24px; color: var(--gold);
-        }
-
-        header {
-            text-align: center;
-            border-bottom: 2px solid var(--ancient-blue);
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-        }
-
-        h1 {
-            font-family: 'Maitree', serif;
-            font-weight: 700;
-            font-size: clamp(18px, 5vw, 32px);
-            color: var(--ancient-blue);
-            margin: 0;
-            letter-spacing: 1px;
-        }
-
-        .search-container {
-            max-width: 350px;
-            margin: 10px auto;
-        }
-
-        #searchInput {
-            width: 100%;
-            padding: 8px 15px;
-            background: #fff;
-            border: 1px solid var(--ancient-blue);
-            font-size: 14px;
-            text-align: center;
-            border-radius: 20px;
-            outline: none;
-        }
-
-        /* Grid Layout: 2 Columns on ALL devices including mobile */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 10px;
-        }
-
-        @media(min-width: 1024px) {
-            .grid { gap: 20px; }
-        }
-
-        .grid-item {
-            display: flex;
-            flex-direction: column; 
-            background: #fff;
-            border: 1px solid #e2e8f0;
-            padding: 8px;
-            transition: all 0.2s ease;
-            align-items: center;
-            border-radius: var(--radius);
-            text-align: center;
-            justify-content: space-between;
-        }
-
-        @media(min-width: 640px) {
-            .grid-item {
-                flex-direction: row;
-                text-align: left;
-                padding: 12px;
-                justify-content: flex-start;
-            }
-        }
-
-        .grid-item:hover {
-            border-color: var(--gold);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        /* Book UI - Blue with Thai Pattern */
-        .volume-box {
-            width: 60px;
-            height: 85px;
-            flex-shrink: 0;
-            background: var(--ancient-blue);
-            border-left: 5px solid var(--dark-blue);
-            position: relative;
-            box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold-bright);
-            text-decoration: none;
-            overflow: hidden;
-            margin-bottom: 8px;
-        }
-
-        @media(min-width: 640px) {
-            .volume-box {
-                width: 75px;
-                height: 105px;
-                margin-bottom: 0;
-            }
-        }
-
-        /* ลายไทย (Thai Pattern Overlay) */
-        .volume-box::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            opacity: 0.15;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Cpath d='M20 0c5 10 10 10 20 10-10 0-10 5-10 10 0-5-5-5-10-10 5 10 0 10-10 20 0-10 5-10 10-20-5 0-5-5-10-10 10 0 10-5 10-10z' fill='%23ffd700' fill-rule='evenodd'/%3E%3C/svg%3E");
-            background-size: 18px 18px;
-        }
-
-        .volume-box::after {
-            content: "";
-            position: absolute;
-            inset: 3px;
-            border: 1px solid var(--gold);
-            opacity: 0.4;
-            pointer-events: none;
-        }
-
-        .vol-num {
-            font-family: 'Maitree', serif;
-            font-weight: 700;
-            font-size: 16px;
-            z-index: 2;
-            text-shadow: 0 0 8px rgba(0,0,0,0.5);
-        }
-
-        .description {
-            width: 100%;
-        }
-
-        @media(min-width: 640px) {
-            .description { padding-left: 12px; }
-        }
-
-        .description h3 {
-            font-family: 'Maitree', serif;
-            margin: 0;
-            font-size: 13px;
-            color: var(--ancient-blue);
-            line-height: 1.2;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .description p {
-            margin: 2px 0 0;
-            font-size: 10px;
-            color: #64748b;
-            line-height: 1.3;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-        }
-
-        /* FAB - Chatbot Button */
-        #fab-chat-toggle {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: var(--ancient-blue);
-            color: var(--gold-bright);
-            border: 2px solid var(--gold);
-            border-radius: 50%;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            z-index: 100;
-            font-family: 'Maitree', serif;
-            transition: transform 0.2s;
-        }
-        #fab-chat-toggle:hover { transform: scale(1.1); }
-
-        /* FAB - Check-in Button (Gold) */
-        #fab-checkin {
-            position: fixed;
-            bottom: 85px; /* อยู่เหนือปุ่ม AI */
-            right: 20px;
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(135deg, var(--gold-bright), var(--gold));
-            color: var(--dark-blue);
-            border: 2px solid #fff;
-            border-radius: 50%;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            z-index: 99; /* อยู่ใต้ Modal Chatbot แต่เหนือเนื้อหา */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.2s;
-        }
-        #fab-checkin:active { transform: scale(0.9); }
-        #fab-checkin:hover { transform: scale(1.1); }
-
-        /* Badge Number above Calendar */
-        #checkin-badge {
-            position: fixed;
-            bottom: 125px; /* อยู่เหนือปุ่มปฏิทิน */
-            right: 25px;   /* จัดกึ่งกลางปุ่ม (ปุ่มขวา 20 กว้าง 50 = กึ่งกลาง 45) */
-            background-color: var(--ancient-blue);
-            color: #fff;
-            border: 2px solid var(--gold);
-            border-radius: 12px;
-            padding: 2px 8px;
-            font-size: 12px;
-            font-weight: bold;
-            z-index: 101;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            font-family: 'Sarabun', sans-serif;
-            pointer-events: none;
-            transition: all 0.3s ease;
-        }
-
-        /* Chatbot Modal - Hidden by Default */
-        #chatbot-modal {
-            position: fixed;
-            bottom: 80px;
-            right: 15px;
-            width: 330px;
-            max-width: calc(100vw - 30px);
-            height: 450px;
-            background: #fff;
-            border: 4px solid var(--dark-blue);
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-            z-index: 1000;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .chatbot-hidden { display: none !important; }
-
-        #chat-header {
-            background: var(--ancient-blue);
-            color: white;
-            padding: 8px 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        #chat-history {
-            flex: 1;
-            padding: 12px;
-            overflow-y: auto;
-            background: #f8fafc;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .bubble {
-            padding: 8px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            max-width: 90%;
-            word-wrap: break-word;
-        }
-
-        .bubble-ai { background: #e2e8f0; align-self: flex-start; color: #1e293b; }
-        .bubble-user { background: var(--ancient-blue); color: white; align-self: flex-end; }
-
-        .input-area {
-            padding: 8px;
-            border-top: 1px solid #e2e8f0;
-            display: flex;
-            gap: 5px;
-        }
-
-        #user-input {
-            flex: 1;
-            padding: 6px 10px;
+        /* Manuscript Paper Body Frame */
+        .manuscript-wrapper {
+            background-color: var(--paper-bg);
+            background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
             border: 1px solid #cbd5e1;
-            border-radius: 4px;
-            font-size: 12px;
         }
 
-        #send-btn {
-            background: var(--ancient-blue);
-            color: white;
-            padding: 0 10px;
-            border-radius: 4px;
-            font-size: 12px;
+        /* Royal Blue Book Cover Style (ปรับเปลี่ยนเป็นสีน้ำเงินครามทองทั้งเล่ม ไม่มีสีขาว) */
+        .blue-book-cover {
+            background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 50%, #0f172a 100%) !important;
+            position: relative;
+            box-shadow: -4px 5px 14px rgba(0, 0, 0, 0.45), inset 0 0 15px rgba(255, 215, 0, 0.25);
+            border-radius: 3px 8px 8px 3px;
+            transition: all 0.25s ease-in-out;
         }
 
-        .thinking-bar {
-            height: 2px; width: 100%; background: linear-gradient(90deg, var(--gold), var(--ancient-blue), var(--gold));
-            background-size: 200% 100%; animation: thinking 1.5s linear infinite;
+        /* Spine detail */
+        .blue-book-cover::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 7px;
+            background: linear-gradient(90deg, #0a0f1d 0%, #2563eb 50%, #1e3a8a 100%);
+            border-right: 1.5px solid rgba(250, 204, 21, 0.85);
+            border-radius: 3px 0 0 3px;
+            z-index: 5;
         }
-        @keyframes thinking { 0% { background-position: 100% 0; } 100% { background-position: -100% 0; } }
 
-        /* Notification Toast */
-        #toast {
-            visibility: hidden;
-            min-width: 250px;
-            background-color: var(--dark-blue);
-            color: #fff;
-            text-align: center;
-            border-radius: 8px;
-            padding: 16px;
-            position: fixed;
-            z-index: 2000;
-            left: 50%;
-            bottom: 30px;
-            transform: translateX(-50%);
-            font-size: 14px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            border: 1px solid var(--gold);
+        /* Gold Framed Border on Cover */
+        .blue-book-frame {
+            position: absolute;
+            inset: 4px;
+            border: 1px solid rgba(250, 204, 21, 0.85);
+            border-radius: 2px;
+            pointer-events: none;
         }
-        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
-        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
-        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
 
-        /* Reward Modal */
-        .reward-modal {
-            display: none;
-            position: fixed;
-            z-index: 3000;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            justify-content: center;
-            align-items: center;
+        .blue-book-frame::after {
+            content: "";
+            position: absolute;
+            inset: 2px;
+            border: 1px dashed rgba(255, 230, 120, 0.45);
         }
-        .reward-content {
-            background: linear-gradient(135deg, #fff, #fdfaf1);
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            border: 4px solid var(--gold);
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 0 50px var(--gold);
-            animation: popIn 0.5s ease;
+
+        .royal-card:hover .blue-book-cover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: -6px 8px 20px rgba(0, 0, 0, 0.55), 0 0 18px rgba(212, 175, 55, 0.4);
         }
-        @keyframes popIn { from {transform: scale(0.5); opacity: 0;} to {transform: scale(1); opacity: 1;} }
-        .reward-code {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--ancient-blue);
-            background: #e2e8f0;
-            padding: 10px;
-            border-radius: 8px;
-            margin: 20px 0;
-            letter-spacing: 2px;
-            border: 1px dashed var(--ancient-blue);
+
+        /* Subtle Thai Kranok Pattern Overlay on Cover */
+        .thai-pattern-overlay {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg fill='%23ffd700' fill-opacity='0.15'%3E%3Cpath d='M12 0C15 6 18 6 24 6C18 6 18 9 18 12C18 9 15 9 12 6C9 9 6 9 6 12C6 9 6 6 0 6C6 6 9 6 12 0Z'/%3E%3C/g%3E%3C/svg%3E");
+            background-size: 12px 12px;
+        }
+
+        /* Gold Ribbon Bookmark Accent */
+        .gold-ribbon {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            width: 7px;
+            height: 20px;
+            background: linear-gradient(180deg, #fde047 0%, #b8860b 100%);
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+        }
+
+        /* Custom Scrollbar */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.05);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
         }
     </style>
 </head>
-<body>
+<body class="py-2 sm:py-6 px-1.5 sm:px-4 antialiased selection:bg-amber-200 selection:text-amber-950">
 
-<div class="manuscript-container">
-    <header>
-        <h1>พระไตรปิฎก 45 เล่ม</h1>
-        <p style="font-size: 11px; opacity: 0.8; color: var(--ancient-blue); font-weight: 600;">ฉบับดิจิทัลคัมภีร์</p>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="ค้นหาเลขเล่ม (1-45)">
+<!-- Main Container -->
+<div class="manuscript-wrapper max-w-5xl mx-auto rounded-xl overflow-hidden relative min-h-[96vh] flex flex-col justify-between">
+
+    <div>
+        <!-- COMPACT HEADER BANNER -->
+        <header class="bg-gradient-to-r from-slate-950 via-slate-900 to-indigo-950 text-white px-3 py-4 sm:py-5 text-center border-b-2 border-amber-500/70 shadow-md relative">
+            
+            <!-- Minimal Emblem Sub-heading Badge -->
+            <div class="inline-flex items-center justify-center px-3 py-0.5 bg-amber-500/10 rounded-full border border-amber-500/20 mb-1.5">
+                <span class="text-amber-300 mr-1.5 text-xs">☸</span>
+                <span class="text-[11px] sm:text-xs text-amber-200/90 font-sarabun tracking-wide">
+                    พระธรรมวินัย ๔๕ เล่ม ฉบับดิจิทัลคัมภีร์รัตนบรมธรรม
+                </span>
+            </div>
+
+            <!-- Compact Title -->
+            <h1 class="font-maitree font-bold text-2xl sm:text-3xl tracking-wide text-amber-300 drop-shadow-sm my-0.5">
+                พระไตรปิฎก ๔๕ เล่ม
+            </h1>
+            
+            <!-- Compact Subtitle -->
+            <p class="font-sarabun text-[11px] sm:text-xs text-slate-300 font-light max-w-lg mx-auto opacity-80 leading-relaxed">
+                สืบสานพระพุทธศาสนา • รวมคำสอนพระพุทธองค์สมบูรณ์ทั้งพระวินัย พระสูตร และพระอภิธรรม
+            </p>
+
+            <!-- Compact Pill Counters (เล็ก กระชับ ไม่เด่น) -->
+            <div class="flex flex-wrap justify-center gap-1.5 sm:gap-2 mt-3 text-[10px] sm:text-[11px] font-sarabun">
+                <span class="bg-amber-950/40 text-amber-200/90 border border-amber-500/30 px-2.5 py-0.5 rounded-full flex items-center">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-400 mr-1"></span>พระวินัยปิฎก (เล่ม ๑-๘)
+                </span>
+                <span class="bg-blue-950/40 text-blue-200/90 border border-blue-400/30 px-2.5 py-0.5 rounded-full flex items-center">
+                    <span class="w-1.5 h-1.5 rounded-full bg-blue-400 mr-1"></span>พระสุตตันตปิฎก (เล่ม ๙-๓๓)
+                </span>
+                <span class="bg-emerald-950/40 text-emerald-200/90 border border-emerald-400/30 px-2.5 py-0.5 rounded-full flex items-center">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1"></span>พระอภิธรรมปิฎก (เล่ม ๓๔-๔๕)
+                </span>
+            </div>
+        </header>
+
+        <!-- SEARCH & FILTER TOOLBAR -->
+        <section class="p-2.5 sm:p-4 bg-stone-100/90 border-b border-stone-200/80 sticky top-0 z-30 backdrop-blur-md shadow-sm">
+            <div class="max-w-3xl mx-auto space-y-2">
+                
+                <!-- Search Input Bar -->
+                <div class="relative max-w-md mx-auto">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        placeholder="ค้นหาเลขเล่ม (1-45), ชื่อพระสูตร หรือหมวดธรรม..." 
+                        class="w-full pl-9 pr-8 py-1.5 sm:py-2 bg-white border border-slate-300 focus:border-slate-800 focus:ring-1 focus:ring-slate-800 rounded-full text-xs sm:text-sm text-slate-800 placeholder-slate-400 outline-none shadow-sm transition-all text-center sm:text-left"
+                    />
+                    <button id="clearSearch" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 text-xs">
+                        ✕
+                    </button>
+                </div>
+
+                <!-- Category Filter Pills -->
+                <div class="flex flex-wrap justify-center gap-1 text-[11px] font-sarabun">
+                    <button data-cat="all" class="filter-btn active px-3 py-1 rounded-full border border-slate-900 bg-slate-900 text-amber-300 transition-all shadow-sm">
+                        ทั้งหมด (๔๕)
+                    </button>
+                    <button data-cat="vinaya" class="filter-btn px-3 py-1 rounded-full border border-stone-300 bg-white text-stone-700 hover:border-amber-600 transition-all shadow-sm">
+                        พระวินัย (๑-๘)
+                    </button>
+                    <button data-cat="sutta" class="filter-btn px-3 py-1 rounded-full border border-stone-300 bg-white text-stone-700 hover:border-blue-600 transition-all shadow-sm">
+                        พระสูตร (๙-๓๓)
+                    </button>
+                    <button data-cat="abhidhamma" class="filter-btn px-3 py-1 rounded-full border border-stone-300 bg-white text-stone-700 hover:border-emerald-600 transition-all shadow-sm">
+                        พระอภิธรรม (๓๔-๔๕)
+                    </button>
+                    <button data-cat="bookmark" class="filter-btn px-3 py-1 rounded-full border border-amber-300 bg-amber-50 text-amber-900 hover:bg-amber-100 transition-all shadow-sm flex items-center gap-1">
+                        <span>📌</span> คั่นไว้ (<span id="bookmark-count">0</span>)
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- VOLUMES GRID CONTAINER (2 Columns on mobile as specified) -->
+        <main class="p-2 sm:p-5 md:p-6">
+            <div id="grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-4">
+                <!-- Dynamic Content Injected via JavaScript -->
+            </div>
+
+            <!-- Empty Search Results State -->
+            <div id="noResults" class="hidden text-center py-12 px-4">
+                <div class="text-3xl mb-2">🔍</div>
+                <h3 class="font-maitree text-sm sm:text-base font-bold text-slate-700">ไม่พบเล่มพระไตรปิฎกที่ต้องการค้นหา</h3>
+                <p class="text-xs text-slate-500 mt-1">ลองพิมพ์ระบุเลขเล่ม 1-45 หรือค้นชื่อหมวดธรรม</p>
+                <button onclick="resetSearch()" class="mt-3 px-3 py-1.5 bg-slate-900 text-amber-300 rounded-lg text-xs font-medium hover:bg-slate-800 transition-colors">
+                    แสดงพระไตรปิฎกทั้งหมด
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="mt-6 bg-slate-950 text-slate-400 py-4 px-3 text-center text-xs border-t border-slate-800 font-sarabun">
+        <div class="max-w-xl mx-auto space-y-1">
+            <p class="text-amber-300/90 font-maitree text-xs font-medium">"สพฺพทานํ ธมฺมทานํ ชินาติ - การให้ธรรมะเป็นทาน ย่อมชนะการให้ทั้งปวง"</p>
+            <p class="opacity-60 text-[10px]">© 2026 Crow Studio | ธรรมทานเพื่อมวลมนุษยชาติ</p>
         </div>
-    </header>
-
-    <div class="grid" id="grid"></div>
-
-    <footer style="margin-top: 20px; text-align: center; font-size: 10px; opacity: 0.6; border-top: 1px solid #e2e8f0; padding-top: 10px;">
-        © 2025 Crow Studio | ธรรมทานเพื่อมวลมนุษยชาติ
     </footer>
 </div>
 
-<!-- Check-in Count Badge -->
-<div id="checkin-badge">0</div>
-<!-- Check-in FAB -->
-<button id="fab-checkin" title="ลงชื่อรายวัน">📅</button>
+<!-- ================= FLOATING ACTION BUTTONS (FAB) ================= -->
+<div class="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2.5 pointer-events-none">
+    
+    <!-- Daily Check-in FAB -->
+    <div class="pointer-events-auto relative group">
+        <span id="checkin-badge" class="absolute -top-1.5 -left-1.5 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full border-2 border-white shadow-md font-sarabun">
+            0
+        </span>
+        <button id="fab-checkin" title="ลงชื่อสะสมธรรมะรายวัน" 
+            class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-tr from-amber-500 via-amber-400 to-yellow-300 text-slate-900 border-2 border-white shadow-lg flex items-center justify-center text-lg sm:text-xl hover:scale-105 active:scale-95 transition-all">
+            📅
+        </button>
+    </div>
 
-<!-- Chatbot FAB -->
-<button id="fab-chat-toggle" title="ถาม AI ธรรมะ">Ai</button>
+    <!-- AI Chatbot FAB -->
+    <div class="pointer-events-auto relative group">
+        <button id="fab-chat-toggle" title="สอบถาม AI วิสัชนาธรรม"
+            class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-tr from-slate-900 via-indigo-950 to-slate-900 text-amber-300 border-2 border-amber-400 shadow-lg flex items-center justify-center font-charm font-bold text-base sm:text-lg hover:scale-105 active:scale-95 transition-all">
+            <span>Ai</span>
+        </button>
+    </div>
+
+</div>
+
+<!-- ================= MODALS & TOAST NOTIFICATIONS ================= -->
 
 <!-- Toast Notification -->
-<div id="toast">ข้อความแจ้งเตือน</div>
+<div id="toast" class="fixed bottom-20 left-1/2 -translate-x-1/2 z-50 invisible opacity-0 bg-slate-950/95 text-amber-300 text-xs px-4 py-2.5 rounded-xl border border-amber-500/40 shadow-xl backdrop-blur-md transition-all duration-300 flex items-center gap-1.5 pointer-events-none font-sarabun">
+    <span id="toast-icon">✨</span>
+    <span id="toast-msg">ข้อความแจ้งเตือน</span>
+</div>
 
-<!-- Reward Modal -->
-<div id="rewardModal" class="reward-modal">
-    <div class="reward-content">
-        <h2 style="color: var(--gold); margin-top: 0;">🎉 สาธุการ! 🎉</h2>
-        <p>ท่านได้เพียรพยายามศึกษาธรรมครบ 100 วันแล้ว</p>
-        <p>นี่คือรหัสลับสำหรับรางวัลพิเศษ:</p>
-        <div class="reward-code">no-ads-2025</div>
-        <p style="font-weight: bold; color: var(--ancient-blue);">"ลบโฆษณาถาวร"</p>
-        <p style="font-size: 12px; color: #666; margin-top:5px;">(โปรดบันทึกภาพหน้าจอนี้ไว้เพื่อยืนยัน)</p>
-        <button onclick="document.getElementById('rewardModal').style.display='none'" style="margin-top: 15px; padding: 8px 20px; background: var(--ancient-blue); color: white; border: none; border-radius: 5px; cursor: pointer;">ปิด</button>
+<!-- Reward Modal (100 Days Streak Special) -->
+<div id="rewardModal" class="hidden fixed inset-0 z-50 bg-black/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white border-2 border-amber-400 rounded-xl p-5 max-w-sm w-full text-center shadow-2xl relative font-sarabun">
+        <div class="text-4xl mb-1">🎉</div>
+        <h2 class="font-maitree text-xl font-bold text-slate-900">สาธุการ! ความเพียรสำเร็จ</h2>
+        <p class="text-xs text-slate-600 mt-1">ท่านได้เพียรพยายามศึกษาพระธรรมครบ <span class="font-bold text-amber-600">100 วัน</span> แล้ว</p>
+        
+        <div class="my-4 p-3 bg-stone-100 border border-dashed border-amber-600 rounded-lg">
+            <span class="text-[11px] text-slate-500 block">รหัสลับสมนาคุณพิเศษ</span>
+            <span class="font-mono text-lg font-bold text-slate-900 tracking-wider">no-ads-2026</span>
+            <span class="text-xs font-semibold text-emerald-600 block mt-0.5">"สิทธิ์ปิดโฆษณาถาวร"</span>
+        </div>
+        
+        <p class="text-[10px] text-slate-400">โปรดบันทึกภาพหน้าจอนี้ไว้เป็นหลักฐานเพื่อยืนยันสิทธิ์</p>
+        
+        <button onclick="closeRewardModal()" class="mt-4 w-full py-2 bg-slate-900 hover:bg-slate-950 text-amber-300 rounded-lg text-xs font-semibold transition-colors">
+            น้อมรับและปิดหน้าต่าง
+        </button>
     </div>
 </div>
 
-<!-- Chatbot UI - Hidden initially -->
-<div id="chatbot-modal" class="chatbot-hidden">
-    <div id="chat-header">
-        <span style="font-size: 13px;">☸ AI วิสัชนาธรรม</span>
-        <button id="close-chat" style="font-size: 20px; line-height: 1;">×</button>
+<!-- AI Chatbot Modal Dialog -->
+<div id="chatbot-modal" class="hidden fixed bottom-16 right-2 sm:right-5 z-50 w-[320px] sm:w-[360px] max-w-[calc(100vw-1rem)] h-[440px] bg-white rounded-xl border-2 border-slate-900 shadow-2xl flex flex-col overflow-hidden font-sarabun transition-all">
+    
+    <!-- Chat Header -->
+    <div class="bg-gradient-to-r from-slate-950 to-indigo-950 text-white px-3 py-2.5 flex items-center justify-between border-b border-amber-500/30">
+        <div class="flex items-center gap-2">
+            <span class="text-amber-300 text-sm">☸</span>
+            <div>
+                <h3 class="font-maitree text-xs sm:text-sm font-bold text-amber-300 leading-none">AI วิสัชนาธรรม</h3>
+                <p class="text-[9px] text-slate-300 opacity-80">ผู้ช่วยสอบถามพระไตรปิฎก ๒๔ ชม.</p>
+            </div>
+        </div>
+        <button id="close-chat" class="text-slate-300 hover:text-white text-base font-bold px-1.5 py-0.5 rounded">
+            ✕
+        </button>
     </div>
-    <div id="chat-history">
-        <div class="bubble bubble-ai">เจริญพร... มีข้อสงสัยในพระไตรปิฎกส่วนใด สอบถามอาตมาได้เลย</div>
+
+    <!-- Quick Prompt Chips -->
+    <div class="bg-stone-100 px-2 py-1.5 border-b border-stone-200 flex gap-1 overflow-x-auto text-[10px] whitespace-nowrap custom-scrollbar">
+        <button onclick="quickPrompt('สรุปอริยสัจ 4 โดยย่อ')" class="px-2 py-0.5 bg-white border border-stone-300 rounded-full text-stone-700 hover:bg-amber-50">
+            💡 อริยสัจ ๔
+        </button>
+        <button onclick="quickPrompt('สรุปความสำคัญของ เล่มที่ 1 พระวินัย')" class="px-2 py-0.5 bg-white border border-stone-300 rounded-full text-stone-700 hover:bg-amber-50">
+            📖 พระวินัยเล่ม ๑
+        </button>
+        <button onclick="quickPrompt('การเจริญสติในชีวิตประจำวัน')" class="px-2 py-0.5 bg-white border border-stone-300 rounded-full text-stone-700 hover:bg-amber-50">
+            🧘‍♂️ เจริญสติ
+        </button>
     </div>
-    <div id="thinking" class="hidden"><div class="thinking-bar"></div></div>
-    <div class="input-area">
-        <input type="text" id="user-input" placeholder="ถามปัญหาธรรม...">
-        <button id="send-btn">ส่ง</button>
+
+    <!-- Chat History Window -->
+    <div id="chat-history" class="flex-1 p-2.5 overflow-y-auto bg-stone-50 space-y-2.5 custom-scrollbar text-xs">
+        <div class="flex items-start gap-1.5">
+            <div class="w-5 h-5 rounded-full bg-slate-900 text-amber-300 flex items-center justify-center text-[9px] flex-shrink-0 mt-0.5">☸</div>
+            <div class="bg-white border border-stone-200 text-stone-800 p-2 rounded-xl rounded-tl-none shadow-sm max-w-[88%] leading-relaxed">
+                เจริญพร... มีข้อสงสัยในพระไตรปิฎกส่วนใด พิมพ์สอบถามอาตมาได้เลย
+            </div>
+        </div>
+    </div>
+
+    <!-- Thinking Indicator -->
+    <div id="thinking" class="hidden px-3 py-1 bg-amber-50 text-[10px] text-amber-900 flex items-center gap-1.5 border-t border-amber-100">
+        <span class="w-1.5 h-1.5 rounded-full bg-amber-600 animate-ping"></span>
+        <span>กำลังค้นหาคัมภีร์วิสัชนา...</span>
+    </div>
+
+    <!-- Input Area -->
+    <div class="p-2 bg-white border-t border-stone-200 flex gap-1.5 items-center">
+        <input type="text" id="user-input" 
+            placeholder="พิมพ์ปัญหาธรรมที่นี่..." 
+            class="flex-1 px-2.5 py-1.5 bg-stone-100 border border-stone-300 focus:border-slate-900 focus:bg-white rounded-lg text-xs text-stone-800 outline-none"
+        />
+        <button id="send-btn" class="px-3 py-1.5 bg-slate-900 hover:bg-slate-950 text-amber-300 rounded-lg text-xs font-semibold shadow">
+            ส่ง
+        </button>
     </div>
 </div>
 
+<!-- ================= JAVASCRIPT LOGIC ================= -->
 <script>
-    // --- URLs ของหนังสือ ---
+    // 45 Volume Links
     const links = [
-        "tri1/index.html",
-        "tri2/index.html",
-        "tri3/index.html",
-        "tri4/index.html",
-        "tri5/index.html",
-        "tri6/index.html",
-        "tri7/index.html",
-        "tri8/index.html",
-        "tri9/index.html",
-        "tri10/index.html",
-        "tri11/index.html",
-        "tri12/index.html",
-        "tri13/index.html",
-        "tri14/index.html",
-        "tri15/index.html",
-         "tri16/index.html",
-         "tri17/index.html",
-        "tri18/index.html",
-        "tri19/index.html",
-        "tri20/index.html",
-        "tri21/index.html",
-        "tri22/index.html",
-        "tri23/index.html",
-        "tri24/index.html",
-        "tri25/index.html",
-        "tri26/index.html",
-        "tri27/index.html",
-        "tri28/index.html",
-        "tri129/index.html",
-        "tri29/index.html",
-        "tri30/index.html",
-         "tri31/index.html",
-        "tri32/index.html",
-        "tri33/index.html",
-        "tri34/index.html",
-        "tri35/index.html",
-        "tri36/index.html",
+        "tri1/index.html", "tri2/index.html", "tri3/index.html", "tri4/index.html", "tri5/index.html",
+        "tri6/index.html", "tri7/index.html", "tri8/index.html", "tri9/index.html", "tri10/index.html",
+        "tri11/index.html", "tri12/index.html", "tri13/index.html", "tri14/index.html", "tri15/index.html",
+        "tri16/index.html", "tri17/index.html", "tri18/index.html", "tri19/index.html", "tri20/index.html",
+        "tri21/index.html", "tri22/index.html", "tri23/index.html", "tri24/index.html", "tri25/index.html",
+        "tri26/index.html", "tri27/index.html", "tri28/index.html", "tri129/index.html", "tri29/index.html",
+        "tri30/index.html", "tri31/index.html", "tri32/index.html", "tri33/index.html", "tri34/index.html",
+        "tri35/index.html", "tri36/index.html",
         "https://tontakankeawpang321-glitch.github.io/pritrupidok37.io/tri37/index.html",
         "https://tontakankeawpang321-glitch.github.io/pritrupidok37.io/tri38/index.html",
         "https://tontakankeawpang321-glitch.github.io/pritrupidok37.io/tri39/index.html",
@@ -516,9 +375,9 @@
         "https://tontakankeawpang321-glitch.github.io/pritrupidok37.io/tri43/index.html",
         "https://tontakankeawpang321-glitch.github.io/pritrupidok37.io/tri44/index.html",
         "https://tontakankeawpang321-glitch.github.io/pritrupidok37.io/tri45/index.html",
-        
     ];
 
+    // Descriptions
     const descriptions = [
         "มหาวิภังค์ ภาค 1 - ปาราชิก สังฆาทิเสส",
         "มหาวิภังค์ ภาค 2 - นิสสัคคิยปาจิตตีย์",
@@ -567,137 +426,336 @@
         "ปัฏฐานปกรณ์ ภาค 5",
     ];
 
-    const volumes = Array.from({length: 45}, (_, i) => ({
-        n: i + 1,
-        cat: (i+1) <= 8 ? 'พระวินัย' : (i+1) <= 33 ? 'พระสูตร' : 'พระอภิธรรม',
-        link: links[i],
-        desc: descriptions[i]
-    }));
+    // Convert numbers to Thai numerals
+    function toThaiDigits(num) {
+        const thaiNums = ['๐','๑','๒','๓','๔','๕','๖','๗','๘','๙'];
+        return num.toString().split('').map(d => thaiNums[parseInt(d)] || d).join('');
+    }
+
+    // Construct Volumes Object List
+    const volumes = Array.from({length: 45}, (_, i) => {
+        const num = i + 1;
+        let catKey = 'vinaya';
+        let catLabel = 'พระวินัย';
+        let tagBg = 'bg-amber-50 text-amber-900 border-amber-300';
+
+        if (num > 8 && num <= 33) {
+            catKey = 'sutta';
+            catLabel = 'พระสูตร';
+            tagBg = 'bg-blue-50 text-blue-900 border-blue-300';
+        } else if (num > 33) {
+            catKey = 'abhidhamma';
+            catLabel = 'พระอภิธรรม';
+            tagBg = 'bg-emerald-50 text-emerald-900 border-emerald-300';
+        }
+
+        return {
+            n: num,
+            thaiN: toThaiDigits(num),
+            catKey: catKey,
+            catLabel: catLabel,
+            tagBg: tagBg,
+            link: links[i],
+            desc: descriptions[i]
+        };
+    });
+
+    // Local Storage Keys
+    const KEY_BOOKMARKS = 'tipitaka_bookmarks_v3';
+    const KEY_DATE = 'tipitaka_last_checkin';
+    const KEY_COUNT = 'tipitaka_checkin_count';
+
+    let currentFilter = 'all';
+    let searchQuery = '';
+    let bookmarks = JSON.parse(localStorage.getItem(KEY_BOOKMARKS) || '[]');
 
     const grid = document.getElementById('grid');
     const searchInput = document.getElementById('searchInput');
+    const clearSearchBtn = document.getElementById('clearSearch');
+    const noResults = document.getElementById('noResults');
 
-    function render(data) {
-        grid.innerHTML = '';
-        data.forEach(v => {
-            const item = document.createElement('div');
-            item.className = 'grid-item';
-            item.innerHTML = `
-                <a href="${v.link}" target="_blank" class="volume-box">
-                    <span class="vol-num">${v.n}</span>
-                </a>
-                <div class="description">
-                    <h3>เล่มที่ ${v.n}</h3>
-                    <p>${v.desc}</p>
-                </div>
-            `;
-            grid.appendChild(item);
-        });
+    function updateBookmarkCount() {
+        document.getElementById('bookmark-count').textContent = bookmarks.length;
     }
 
+    function toggleBookmark(e, volNum) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (bookmarks.includes(volNum)) {
+            bookmarks = bookmarks.filter(n => n !== volNum);
+            showToast('📌 ยกเลิกการคั่นเล่มที่ ' + volNum);
+        } else {
+            bookmarks.push(volNum);
+            showToast('⭐ คั่นเล่มที่ ' + volNum + ' เรียบร้อยแล้ว');
+        }
+        
+        localStorage.setItem(KEY_BOOKMARKS, JSON.stringify(bookmarks));
+        updateBookmarkCount();
+        render();
+    }
+
+    // Render Grid Cards
+    function render() {
+        grid.innerHTML = '';
+        
+        const filtered = volumes.filter(v => {
+            let matchCat = true;
+            if (currentFilter === 'bookmark') {
+                matchCat = bookmarks.includes(v.n);
+            } else if (currentFilter !== 'all') {
+                matchCat = (v.catKey === currentFilter);
+            }
+
+            let matchSearch = true;
+            if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                matchSearch = v.n.toString().includes(q) || 
+                              v.thaiN.includes(q) ||
+                              v.desc.toLowerCase().includes(q) || 
+                              v.catLabel.toLowerCase().includes(q);
+            }
+
+            return matchCat && matchSearch;
+        });
+
+        if (filtered.length === 0) {
+            noResults.classList.remove('hidden');
+        } else {
+            noResults.classList.add('hidden');
+            
+            filtered.forEach(v => {
+                const isBookmarked = bookmarks.includes(v.n);
+                const item = document.createElement('div');
+                item.className = 'royal-card group cursor-pointer';
+                
+                item.innerHTML = `
+                    <div class="bg-white rounded-lg border border-stone-200 hover:border-amber-400 p-2 sm:p-2.5 transition-all duration-200 hover:shadow-md flex flex-col justify-between h-full relative overflow-hidden">
+                        
+                        <!-- Bookmark Star Button -->
+                        <button onclick="toggleBookmark(event, ${v.n})" 
+                            title="${isBookmarked ? 'ยกเลิกคั่นหน้า' : 'คั่นเล่มนี้'}"
+                            class="absolute top-1.5 right-1.5 z-20 w-6 h-6 rounded-full bg-white/90 hover:bg-white border border-stone-200 flex items-center justify-center text-[11px] shadow-sm transition-transform active:scale-90">
+                            ${isBookmarked ? '⭐' : '🤍'}
+                        </button>
+
+                        <a href="${v.link}" target="_blank" class="block space-y-1.5">
+                            
+                            <!-- Royal Blue Cover (สีน้ำเงินครามทอง) -->
+                            <div class="py-1 flex justify-center">
+                                <div class="blue-book-cover thai-pattern-overlay w-16 h-24 sm:w-20 sm:h-28 flex flex-col items-center justify-center text-amber-300 relative select-none">
+                                    
+                                    <div class="gold-ribbon"></div>
+                                    <div class="blue-book-frame"></div>
+                                    
+                                    <!-- Dhammachakka Emblem Symbol ☸ -->
+                                    <span class="text-xs sm:text-sm text-amber-400 mb-0.5">☸</span>
+
+                                    <span class="text-[8px] font-maitree tracking-widest text-amber-200/80 uppercase">เล่มที่</span>
+                                    <span class="font-charm font-bold text-lg sm:text-xl text-amber-200 drop-shadow-sm leading-tight">${v.thaiN}</span>
+                                    <span class="text-[8px] font-sarabun text-amber-300/70">(${v.n})</span>
+                                </div>
+                            </div>
+
+                            <!-- Title & Desc -->
+                            <div class="text-center pt-0.5 font-sarabun">
+                                <span class="inline-block px-1.5 py-0.2 rounded text-[9px] font-medium border ${v.tagBg} mb-0.5">
+                                    ${v.catLabel}
+                                </span>
+                                <h3 class="font-maitree text-xs font-bold text-slate-900 group-hover:text-amber-800 transition-colors line-clamp-1">
+                                    เล่มที่ ${v.thaiN} (${v.n})
+                                </h3>
+                                <p class="text-[10px] text-stone-500 line-clamp-2 mt-0.5 leading-tight font-light">
+                                    ${v.desc}
+                                </p>
+                            </div>
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(item);
+            });
+        }
+    }
+
+    // Search Handlers
     searchInput.oninput = (e) => {
-        const q = e.target.value.trim();
-        render(volumes.filter(v => v.n.toString().includes(q)));
+        searchQuery = e.target.value.trim();
+        clearSearchBtn.classList.toggle('hidden', searchQuery === '');
+        render();
     };
 
-    render(volumes);
+    clearSearchBtn.onclick = () => {
+        searchInput.value = '';
+        searchQuery = '';
+        clearSearchBtn.classList.add('hidden');
+        render();
+    };
 
-    // --- Daily Check-in Logic ---
-    const KEY_DATE = 'tipitaka_last_checkin';
-    const KEY_COUNT = 'tipitaka_checkin_count';
+    function resetSearch() {
+        searchInput.value = '';
+        searchQuery = '';
+        currentFilter = 'all';
+        clearSearchBtn.classList.add('hidden');
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('bg-slate-900', 'text-amber-300');
+            btn.classList.add('bg-white', 'text-stone-700');
+        });
+        render();
+    }
+
+    // Filter Buttons
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.onclick = () => {
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('bg-slate-900', 'text-amber-300');
+                b.classList.add('bg-white', 'text-stone-700');
+            });
+
+            btn.classList.remove('bg-white', 'text-stone-700');
+            btn.classList.add('bg-slate-900', 'text-amber-300');
+
+            currentFilter = btn.dataset.cat;
+            render();
+        };
+    });
+
+    function showToast(msg, icon = '✨') {
+        const toast = document.getElementById('toast');
+        document.getElementById('toast-msg').textContent = msg;
+        document.getElementById('toast-icon').textContent = icon;
+
+        toast.classList.remove('invisible', 'opacity-0');
+        toast.classList.add('opacity-100');
+
+        setTimeout(() => {
+            toast.classList.remove('opacity-100');
+            toast.classList.add('opacity-0', 'invisible');
+        }, 2800);
+    }
+
+    // Daily Check-in Logic
     const fabCheckin = document.getElementById('fab-checkin');
-    const badge = document.getElementById('checkin-badge');
-    
-    function showToast(message) {
-        const x = document.getElementById("toast");
-        x.textContent = message;
-        x.className = "show";
-        setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
-    }
+    const checkinBadge = document.getElementById('checkin-badge');
 
-    // Function to update the number above calendar
-    function updateBadge() {
+    function updateCheckinBadge() {
         const count = parseInt(localStorage.getItem(KEY_COUNT) || '0');
-        badge.innerText = count;
+        checkinBadge.innerText = count;
     }
-
-    // Initial Badge Update
-    updateBadge();
 
     fabCheckin.onclick = function() {
-        const today = new Date().toISOString().split('T')[0]; // Format: YYYY-MM-DD
+        const today = new Date().toISOString().split('T')[0];
         const lastDate = localStorage.getItem(KEY_DATE);
         let count = parseInt(localStorage.getItem(KEY_COUNT) || '0');
 
         if (lastDate === today) {
-            showToast("ท่านเช็คชื่อเรียบร้อย เช็คครบ 100 วัน รับ ลบโฆษณาฟรีถาวร");
+            showToast(`วันนี้ลงชื่อสะสมธรรมแล้ว (${count} วัน)`, '📅');
             return;
         }
 
-        // ลงชื่อสำเร็จ
         count++;
         localStorage.setItem(KEY_DATE, today);
         localStorage.setItem(KEY_COUNT, count);
-        updateBadge();
+        updateCheckinBadge();
 
-        if (count === 100) {
-            document.getElementById('rewardModal').style.display = 'flex';
+        if (count >= 100) {
+            document.getElementById('rewardModal').classList.remove('hidden');
         } else {
-            showToast(`✨ ลงชื่อสำเร็จ! ท่านสะสมธรรมทานครบ ${count} วันแล้ว`);
+            showToast(`✨ อนุโมทนา! ลงชื่อสำเร็จ สะสมครบ ${count} วันแล้ว`, '🎉');
         }
     };
 
-    // --- Chatbot Logic ---
+    function closeRewardModal() {
+        document.getElementById('rewardModal').classList.add('hidden');
+    }
+
+    // AI Chatbot Backend Integration
     const BACKEND_URL = 'https://solitary-leaf-3661.tontakankeawpang321.workers.dev';
-    const fab = document.getElementById('fab-chat-toggle');
-    const modal = document.getElementById('chatbot-modal');
+    const fabChat = document.getElementById('fab-chat-toggle');
+    const chatModal = document.getElementById('chatbot-modal');
     const closeChat = document.getElementById('close-chat');
     const sendBtn = document.getElementById('send-btn');
     const userInput = document.getElementById('user-input');
-    const history = document.getElementById('chat-history');
+    const chatHistory = document.getElementById('chat-history');
     const thinking = document.getElementById('thinking');
 
-    fab.onclick = () => modal.classList.toggle('chatbot-hidden');
-    closeChat.onclick = () => modal.classList.add('chatbot-hidden');
+    fabChat.onclick = () => chatModal.classList.toggle('hidden');
+    closeChat.onclick = () => chatModal.classList.add('hidden');
 
-    async function handleSend() {
-        const text = userInput.value.trim();
-        if(!text) return;
-        
-        const uB = document.createElement('div'); 
-        uB.className='bubble bubble-user'; 
-        uB.innerText=text;
-        history.appendChild(uB); 
-        userInput.value=''; 
-        history.scrollTop=history.scrollHeight;
-        
+    async function handleSend(customText = null) {
+        const text = customText || userInput.value.trim();
+        if (!text) return;
+
+        // User Message Bubble
+        const uBubble = document.createElement('div');
+        uBubble.className = 'flex justify-end';
+        uBubble.innerHTML = `
+            <div class="bg-slate-900 text-amber-200 p-2 rounded-xl rounded-tr-none max-w-[88%] leading-relaxed shadow-sm">
+                ${escapeHTML(text)}
+            </div>
+        `;
+        chatHistory.appendChild(uBubble);
+        if(!customText) userInput.value = '';
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+
         thinking.classList.remove('hidden');
-        
+
         try {
             const res = await fetch(BACKEND_URL, {
-                method: 'POST', 
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ history: [{role:"user", parts:[{text}]}] })
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ history: [{ role: "user", parts: [{ text }] }] })
             });
             const data = await res.json();
-            
-            const aB = document.createElement('div'); 
-            aB.className='bubble bubble-ai'; 
-            aB.innerText=data.reply;
-            history.appendChild(aB);
-        } catch(e) {
-            const eB = document.createElement('div'); 
-            eB.className='bubble bubble-ai'; 
-            eB.innerText="ขออภัย เจริญพร มีข้อผิดพลาดในการเชื่อมต่อ";
-            history.appendChild(eB);
-        } finally { 
-            thinking.classList.add('hidden'); 
-            history.scrollTop=history.scrollHeight; 
+
+            // AI Response Bubble
+            const aBubble = document.createElement('div');
+            aBubble.className = 'flex items-start gap-1.5';
+            aBubble.innerHTML = `
+                <div class="w-5 h-5 rounded-full bg-slate-900 text-amber-300 flex items-center justify-center text-[9px] flex-shrink-0 mt-0.5">☸</div>
+                <div class="bg-white border border-stone-200 text-stone-800 p-2 rounded-xl rounded-tl-none shadow-sm max-w-[88%] leading-relaxed">
+                    ${escapeHTML(data.reply || 'ขออภัย ไม่สามารถดึงคำตอบได้ในขณะนี้')}
+                </div>
+            `;
+            chatHistory.appendChild(aBubble);
+        } catch (e) {
+            const eBubble = document.createElement('div');
+            eBubble.className = 'flex items-start gap-1.5';
+            eBubble.innerHTML = `
+                <div class="w-5 h-5 rounded-full bg-red-900 text-white flex items-center justify-center text-[9px] flex-shrink-0 mt-0.5">⚠️</div>
+                <div class="bg-red-50 border border-red-200 text-red-800 p-2 rounded-xl rounded-tl-none max-w-[88%] leading-relaxed">
+                    ขออภัย เจริญพร เกิดข้อผิดพลาดในการเชื่อมต่อเครือข่าย
+                </div>
+            `;
+            chatHistory.appendChild(eBubble);
+        } finally {
+            thinking.classList.add('hidden');
+            chatHistory.scrollTop = chatHistory.scrollHeight;
         }
     }
 
-    sendBtn.onclick = handleSend;
+    function quickPrompt(text) {
+        handleSend(text);
+    }
+
+    function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+
+    sendBtn.onclick = () => handleSend();
     userInput.onkeydown = (e) => e.key === 'Enter' && handleSend();
+
+    // Initial Execution
+    updateBookmarkCount();
+    updateCheckinBadge();
+    render();
 </script>
 </body>
 </html>
