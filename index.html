@@ -1511,38 +1511,13 @@
         }
     }
 
-    // ฟังก์ชันลบโพสต์ที่อัปเดตให้รองรับ Async การลบ
-    async function deletePost(postId) {
-        if (!confirm('คุณต้องการลบข้อความสนทนานี้ใช่หรือไม่?')) return;
-
-        if (GAS_WEB_APP_URL && !GAS_WEB_APP_URL.includes('YOUR_APPS_SCRIPT_ID_HERE')) {
-            try {
-                showToast('กำลังลบข้อความ...', '⏳');
-                await fetch(GAS_WEB_APP_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ action: 'deletePost', id: postId, postId: postId })
-                });
-                showToast('ลบข้อความเรียบร้อยแล้ว', '🗑️');
-            } catch (err) {
-                deleteLocalPost(postId);
-                showToast('ลบข้อความเรียบร้อยแล้ว', '🗑️');
-            }
-        } else {
-            deleteLocalPost(postId);
-            showToast('ลบข้อความเรียบร้อยแล้ว', '🗑️');
-        }
-
-        await fetchCommunityPosts();
-    }
-
     function deleteLocalPost(postId) {
         let posts = getLocalPosts();
         posts = posts.filter(p => p.id !== postId);
         localStorage.setItem(KEY_LOCAL_POSTS, JSON.stringify(posts));
     }
 
-    // ฟังก์ชันลบโพสต์แบบ SweetAlert2
+    // ฟังก์ชันลบโพสต์แบบ SweetAlert2 (สวยงาม ไม่มี URL แสดงที่หัวข้อ)
     async function deletePost(postId) {
         const result = await Swal.fire({
             title: 'ยืนยันการลบข้อความ?',
@@ -1603,7 +1578,7 @@
         await fetchCommunityPosts();
     }
 
-    // ฟังก์ชันลบคอมเมนต์แบบ SweetAlert2
+    // ฟังก์ชันลบคอมเมนต์แบบ SweetAlert2 (สวยงาม ไม่มี URL แสดงที่หัวข้อ)
     async function deleteReply(postId, replyId) {
         const result = await Swal.fire({
             title: 'ยืนยันการลบความคิดเห็น?',
