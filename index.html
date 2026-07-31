@@ -12,6 +12,8 @@
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -1540,9 +1542,85 @@
         localStorage.setItem(KEY_LOCAL_POSTS, JSON.stringify(posts));
     }
 
-    // ฟังก์ชันลบคอมเมนต์ที่อัปเดต
+    // ฟังก์ชันลบโพสต์แบบ SweetAlert2
+    async function deletePost(postId) {
+        const result = await Swal.fire({
+            title: 'ยืนยันการลบข้อความ?',
+            text: 'คุณต้องการลบข้อความสนทนานี้ใช่หรือไม่?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0f172a',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'ลบข้อความ',
+            cancelButtonText: 'ยกเลิก',
+            customClass: {
+                popup: 'font-sarabun rounded-2xl',
+                title: 'font-maitree text-slate-900 text-sm sm:text-base font-bold'
+            }
+        });
+
+        if (!result.isConfirmed) return;
+
+        if (GAS_WEB_APP_URL && !GAS_WEB_APP_URL.includes('YOUR_APPS_SCRIPT_ID_HERE')) {
+            try {
+                showToast('กำลังลบข้อความ...', '⏳');
+                await fetch(GAS_WEB_APP_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'deletePost', id: postId, postId: postId })
+                });
+                Swal.fire({
+                    title: 'ลบเรียบร้อย!',
+                    text: 'ลบข้อความสนทนาเรียบร้อยแล้ว',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    customClass: { popup: 'font-sarabun rounded-2xl' }
+                });
+            } catch (err) {
+                deleteLocalPost(postId);
+                Swal.fire({
+                    title: 'ลบเรียบร้อย!',
+                    text: 'ลบข้อความเรียบร้อยแล้ว',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    customClass: { popup: 'font-sarabun rounded-2xl' }
+                });
+            }
+        } else {
+            deleteLocalPost(postId);
+            Swal.fire({
+                title: 'ลบเรียบร้อย!',
+                text: 'ลบข้อความเรียบร้อยแล้ว',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false,
+                customClass: { popup: 'font-sarabun rounded-2xl' }
+            });
+        }
+
+        await fetchCommunityPosts();
+    }
+
+    // ฟังก์ชันลบคอมเมนต์แบบ SweetAlert2
     async function deleteReply(postId, replyId) {
-        if (!confirm('คุณต้องการลบความคิดเห็นนี้ใช่หรือไม่?')) return;
+        const result = await Swal.fire({
+            title: 'ยืนยันการลบความคิดเห็น?',
+            text: 'คุณต้องการลบความคิดเห็นนี้ใช่หรือไม่?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0f172a',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'ลบความคิดเห็น',
+            cancelButtonText: 'ยกเลิก',
+            customClass: {
+                popup: 'font-sarabun rounded-2xl',
+                title: 'font-maitree text-slate-900 text-sm sm:text-base font-bold'
+            }
+        });
+
+        if (!result.isConfirmed) return;
 
         if (GAS_WEB_APP_URL && !GAS_WEB_APP_URL.includes('YOUR_APPS_SCRIPT_ID_HERE')) {
             try {
@@ -1552,14 +1630,35 @@
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ action: 'deleteReply', postId: postId, replyId: replyId })
                 });
-                showToast('ลบความคิดเห็นเรียบร้อยแล้ว', '🗑️');
+                Swal.fire({
+                    title: 'ลบเรียบร้อย!',
+                    text: 'ลบความคิดเห็นเรียบร้อยแล้ว',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    customClass: { popup: 'font-sarabun rounded-2xl' }
+                });
             } catch (err) {
                 deleteLocalReply(postId, replyId);
-                showToast('ลบความคิดเห็นเรียบร้อยแล้ว', '🗑️');
+                Swal.fire({
+                    title: 'ลบเรียบร้อย!',
+                    text: 'ลบความคิดเห็นเรียบร้อยแล้ว',
+                    icon: 'success',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    customClass: { popup: 'font-sarabun rounded-2xl' }
+                });
             }
         } else {
             deleteLocalReply(postId, replyId);
-            showToast('ลบความคิดเห็นเรียบร้อยแล้ว', '🗑️');
+            Swal.fire({
+                title: 'ลบเรียบร้อย!',
+                text: 'ลบความคิดเห็นเรียบร้อยแล้ว',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false,
+                customClass: { popup: 'font-sarabun rounded-2xl' }
+            });
         }
 
         expandedReplies[postId] = true;
