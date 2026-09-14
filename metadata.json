@@ -1,0 +1,6 @@
+{
+  "name": "พระไตรปิฎก ๔๕ เล่ม & ชุมชนธรรมะ",
+  "description": "พระไตรปิฎก ๔๕ เล่ม ดิจิทัลคัมภีร์รัตนบรมธรรม พร้อมระบบเปิดอ่าน PDF แบบ WebView ซูมอิสระ แคชเอกสาร AI วิสัชนาธรรม และชุมชนธรรมสากัจฉา",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

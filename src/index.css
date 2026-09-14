@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+:root {
+  --bg-body: #d1d5db;
+  --paper-bg: #fcfbf7;
+  --navy-deep: #0e1a34;
+  --navy-bright: #1b2f5b;
+  --gold-accent: #d4af37;
+}
+
+body {
+  font-family: 'Sarabun', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-body);
+  background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+  color: #1e293b;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.font-charm {
+  font-family: 'Charm', cursive, serif;
+}
+
+.font-maitree {
+  font-family: 'Maitree', serif;
+}
+
+.font-sarabun {
+  font-family: 'Sarabun', sans-serif;
+}
+
+/* Manuscript Paper Body Frame */
+.manuscript-wrapper {
+  background-color: var(--paper-bg);
+  background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  border: 1px solid #cbd5e1;
+}
+
+/* Royal Blue Book Cover Style */
+.blue-book-cover {
+  background: linear-gradient(135deg, #2563eb 0%, #1e3a8a 50%, #0f172a 100%) !important;
+  position: relative;
+  box-shadow: -4px 5px 14px rgba(0, 0, 0, 0.45), inset 0 0 15px rgba(255, 215, 0, 0.25);
+  border-radius: 3px 8px 8px 3px;
+  transition: all 0.25s ease-in-out;
+}
+
+/* Spine detail */
+.blue-book-cover::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: linear-gradient(90deg, #0a0f1d 0%, #2563eb 50%, #1e3a8a 100%);
+  border-right: 1.5px solid rgba(250, 204, 21, 0.85);
+  border-radius: 3px 0 0 3px;
+  z-index: 5;
+}
+
+/* Gold Framed Border on Cover */
+.blue-book-frame {
+  position: absolute;
+  inset: 3px;
+  border: 1px solid rgba(250, 204, 21, 0.85);
+  border-radius: 2px;
+  pointer-events: none;
+}
+
+.blue-book-frame::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border: 1px dashed rgba(255, 230, 120, 0.45);
+}
+
+.royal-card:hover .blue-book-cover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: -5px 7px 18px rgba(0, 0, 0, 0.5), 0 0 15px rgba(212, 175, 55, 0.35);
+}
+
+.thai-pattern-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg fill='%23ffd700' fill-opacity='0.15'%3E%3Cpath d='M12 0C15 6 18 6 24 6C18 6 18 9 18 12C18 9 15 9 12 6C9 9 6 9 6 12C6 9 6 6 0 6C6 6 9 6 12 0Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 12px 12px;
+}
+
+.gold-ribbon {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  width: 6px;
+  height: 18px;
+  background: linear-gradient(180deg, #fde047 0%, #b8860b 100%);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 80%, 0 100%);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.05);
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+}
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
